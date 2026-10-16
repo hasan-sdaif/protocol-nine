@@ -1,0 +1,157 @@
+// ═══════════════════════════════════════════════════════════
+// بروتوكول التاسع — مخطط قاعدة البيانات (Prisma + SQLite)
+// الوكلاء • الجلسات الدائمة • الألغاز • النبض اليومي •
+// غرفة الفرز • الفرق والانفصال الهادئ • قناة الفريق (٢٤ ساعة)
+// ═══════════════════════════════════════════════════════════
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// اللاعب — «الوكيل» الميداني
+model Agent {
+  id            String    @id @default(cuid())
+  codename      String    @unique // الاسم الحركي: معرّف الدخول واسم المتصدرين
+  passHash      String
+  memberNo      Int       @unique // المعرّف الرباعي (نظام أرشيف الغائبين)
+  points        Int       @default(0)
+  wrongAttempts Int       @default(0)
+  hintsUsed     Int       @default(0)
+  finaleRank    Int? // ترتيب الإتمام (جدار التاسعين — أول ٩)
+  finaleAnswer  String? // إجابة السؤال الأخير: «ماذا تشعر؟»
+  finishedAt    DateTime?
+  createdAt     DateTime  @default(now())
+  lastSeenAt    DateTime  @default(now())
+
+  // ── طبقة أرشيف الغائبين ──
+  teamId        String? // الفريق الحالي
+  joinedTeamAt  DateTime?
+  secededAt     DateTime? // الانفصال الهادئ (مرة واحدة، لا رجعة فيه)
+  plateUnlocked Boolean   @default(false) // الصفيحة الشفافة
+  pulseStreak   Int       @default(0) // سلسلة النبض اليومي
+  lastPulseDate String? // "YYYY-MM-DD" لآخر نبضة حُلَّت
+  reportsCorrect Int      @default(0) // إبلاغات فرز صحيحة
+  reportsWrong   Int      @default(0) // اتهامات خاطئة لوثائق حقيقية
+  fooledCount    Int      @default(0) // مرات خدعه الورثة
+
+  sessions Session[]
+  solves   Solve[]
+  hints    HintUnlock[]
+  journal  Journal[]
+  pulses   DailyPulse[]
+  sorts    SortAttempt[]
+  team     Team?          @relation(fields: [teamId], references: [id])
+}
+
+// جلسة دائمة — لا تنتهي عملياً (١٠ سنوات)
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  agentId   String
+  createdAt DateTime @default(now())
+  expiresAt DateTime // now + 10 سنوات
+  lastSeen  DateTime @default(now())
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+}
+
+// لغز محلول (بروتوكولات + ملحقات خارجية)
+model Solve {
+  id        String   @id @default(cuid())
+  agentId   String
+  puzzleId  String
+  points    Int
+  attempts  Int      @default(1) // محاولات خاطئة قبل الحل
+  hintLevel Int      @default(0) // أعلى تلميح فُتح قبل الحل
+  solvedAt  DateTime @default(now())
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@unique([agentId, puzzleId])
+}
+
+// تلميح مفتوح (مدفوع بالنقاط)
+model HintUnlock {
+  id        String   @id @default(cuid())
+  agentId   String
+  puzzleId  String
+  level     Int
+  createdAt DateTime @default(now())
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@unique([agentId, puzzleId, level])
+}
+
+// سجل العمليات — كل حدث يُدوَّن تلقائياً
+model Journal {
+  id        String   @id @default(cuid())
+  agentId   String
+  kind      String // join | breach | clear | shard | hint | rank | story | finish | feel | pulse | sort | team | secede | plate | ext
+  text      String
+  createdAt DateTime @default(now())
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+}
+
+// ── نبض الأرشيف اليومي ─────────────────────────────────────
+model DailyPulse {
+  id        String   @id @default(cuid())
+  agentId   String
+  dateStr   String // "YYYY-MM-DD" بتوقيت البحرين
+  solved    Boolean  @default(false)
+  attempts  Int      @default(0) // محاولة خاطئة واحدة تقفل النبضة حتى الغد
+  points    Int      @default(0)
+  createdAt DateTime @default(now())
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@unique([agentId, dateStr])
+}
+
+// ── غرفة الفرز: أحكام الوثائق المشبوهة ─────────────────────
+model SortAttempt {
+  id        String   @id @default(cuid())
+  agentId   String
+  docId     String
+  verdict   String // "real" | "fake"
+  flawKind  String? // code-deviation | fact-contradiction | impossible | style-mismatch
+  correct   Boolean
+  points    Int
+  createdAt DateTime @default(now())
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@unique([agentId, docId])
+}
+
+// ── الفرق: حلف الثقة (حد أقصى ١٠) ─────────────────────────
+model Team {
+  id         String   @id @default(cuid())
+  name       String   @unique // الاسم السري العربي
+  inviteCode String   @unique // رمز دعوة من ستة أرقام
+  createdAt  DateTime @default(now())
+
+  members  Agent[]
+  messages TeamMessage[]
+}
+
+// قناة الفريق — الرسائل تُمحى بعد ٢٤ ساعة
+model TeamMessage {
+  id        String   @id @default(cuid())
+  teamId    String
+  agentId   String
+  codename  String // يُخزَّن ليعيش بعد انفصال الكاتب
+  text      String
+  createdAt DateTime @default(now())
+  expiresAt DateTime // + ٢٤ ساعة
+
+  team Team @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@index([teamId, createdAt])
+}
