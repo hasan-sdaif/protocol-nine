@@ -68,3 +68,13 @@ public/audio-cache/
 check_db_tmp.ts
 levelup_tmp.ts
 *.mp3.raw
+
+# P9 trailer build intermediates (rebuildable via tools/trailer/scripts)
+/tools/trailer/out/vid-*.mp4
+/tools/trailer/out/*-bed.wav
+/tools/trailer/out/surgery/
+/tools/trailer/out/replaced/
+/tools/trailer/out/render-*.html
+/tools/trailer/out/test.webm
+/tools/trailer/out/test-frame.png
+/tools/trailer/out/*.log

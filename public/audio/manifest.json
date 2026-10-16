@@ -3,7 +3,7 @@
   "model": "eleven_v4",
   "voiceId": "multi",
   "voiceName": "فريق أصوات متنوع — 15 صوتاً (الكاتبة ف.م. أنثى)",
-  "effect": "DSP حسب الوسيط: هاتف 300-3400Hz/8kHz mono 48k • شريط 200-4800Hz/16kHz mono 56k",
+  "effect": "DSP حسب الوسيط: هاتف 300-3400Hz/8kHz mono 48k • شريط 200-4800Hz/16kHz mono 56k • المؤثرات [] مُستبدلة بمؤثرات DSP مُصنَّعة",
   "generatedAt": "2026-10-16T06:34:39.018Z",
   "recordings": [
     {
@@ -23,12 +23,14 @@
       "file": "deep-phone-intro-first-transmission.mp3",
       "feeling": "غامض",
       "effect": "هاتف",
-      "text": "[phone ringing] إن كنتَ تسمع هذه الإرسالية... فقد اخترناك. لا تثق بما تعرفه عن جامعتك. تحت كل حجرٍ حرف، وفي كل صوتٍ رقم. تسعةُ حراسٍ يحيطون بسرٍّ لم يُسْمَحْ لأحدٍ بمعرفته. ما حُذِفَ لم يَخْتَفِ. ما أُحْرِقَ لم يَمُتْ. ما نُسي ينتظر من يتذكر. حاول الوصول إلى البروتوكول التاسع. [static]",
+      "text": "إن كنتَ تسمع هذه الإرسالية... فقد اخترناك. لا تثق بما تعرفه عن جامعتك. تحت كل حجرٍ حرف، وفي كل صوتٍ رقم. تسعةُ حراسٍ يحيطون بسرٍّ لم يُسْمَحْ لأحدٍ بمعرفته. ما حُذِفَ لم يَخْتَفِ. ما أُحْرِقَ لم يَمُتْ. ما نُسي ينتظر من يتذكر. حاول الوصول إلى البروتوكول التاسع.",
       "voice": "Brian — الوسيط (ذكر)",
-      "chars": 286,
+      "chars": 261,
       "voice_id": "nPczCjzI2devNBz1zQrb",
       "gender": "male",
-      "character": "الوسيط"
+      "character": "الوسيط",
+      "effectsReplaced": true,
+      "dspEffects": []
     },
     {
       "id": "recruit",
@@ -191,12 +193,14 @@
       "file": "deep-phone-finale-you-are-the-ninth.mp3",
       "feeling": "عميق",
       "effect": "هاتف",
-      "text": "[phone ringing] الآن فهمت. البروتوكولات التسعة لم تختبر أحداً قبلك... بل اختبرتك أنت. منذ أول إرسالية وأنت داخل المختبر. الكاتبة كتبت: ما حُذف لم يَخْتَفِ، وما أُحرق لم يَمُتْ، وما نُسي ينتظر من يتذكر. أنت التاسع. كنتَ دائماً. اكتب اسمك على الجدار... وانقل الحقيقة. [static]",
+      "text": "الآن فهمت. البروتوكولات التسعة لم تختبر أحداً قبلك... بل اختبرتك أنت. منذ أول إرسالية وأنت داخل المختبر. الكاتبة كتبت: ما حُذف لم يَخْتَفِ، وما أُحرق لم يَمُتْ، وما نُسي ينتظر من يتذكر. أنت التاسع. كنتَ دائماً. اكتب اسمك على الجدار... وانقل الحقيقة.",
       "voice": "Brian — الوسيط (ذكر)",
-      "chars": 274,
+      "chars": 249,
       "voice_id": "nPczCjzI2devNBz1zQrb",
       "gender": "male",
-      "character": "الوسيط"
+      "character": "الوسيط",
+      "effectsReplaced": true,
+      "dspEffects": []
     }
   ],
   "sfx": [
@@ -237,12 +241,16 @@
       "file": "mysterious-phone-p0-archive-origin.mp3",
       "feeling": "غامض",
       "effect": "هاتف",
-      "text": "[old tape recorder clicks] قبل البروتوكولات التسعة... كان هناك الأرشيف. عام ألفين وأربعة وُلد مشروع الطيف في صمت... وفتاة تَعْرِفُهَا الوثائق بالحرفين ف.م. نَسَخَتْ كل وثيقة وَخَبَّأَتْهَا حيث يعني لها كل مكان شيئاً. أربع بوابات صغيرة تفصلك عن الحقيقة الأولى. القيصر هنا يتكلم العربية... بإزاحة أربع. ابدأ من البذرة.",
+      "text": "قبل البروتوكولات التسعة... كان هناك الأرشيف. عام ألفين وأربعة وُلد مشروع الطيف في صمت... وفتاة تَعْرِفُهَا الوثائق بالحرفين ف.م. نَسَخَتْ كل وثيقة وَخَبَّأَتْهَا حيث يعني لها كل مكان شيئاً. أربع بوابات صغيرة تفصلك عن الحقيقة الأولى. القيصر هنا يتكلم العربية... بإزاحة أربع. ابدأ من البذرة.",
       "voice": "Sarah — ذاكرة الأرشيف (أنثى) (أنثى)",
       "chars": 316,
       "voice_id": "EXAVITQu4vr4xnSDxMaL",
       "gender": "female",
-      "character": "ذاكرة الأرشيف (أنثى)"
+      "character": "ذاكرة الأرشيف (أنثى)",
+      "effectsReplaced": true,
+      "dspEffects": [
+        "recorder-clicks.mp3"
+      ]
     },
     {
       "id": "aa-alliance-trust",
@@ -347,108 +355,146 @@
       "file": "distorted-tape-scream-1998-basement.mp3",
       "feeling": "مشوه",
       "effect": "شريط قديم + صراخ بعيد + خطوات",
-      "text": "[old tape recorder clicks] تسجيل واحد... تسعة وتسعين. القبو تحت مبنى سبعة عشر. [slow footsteps] لا تنزلوا بعد الغروب. [distant scream] لا أحد ينزل... بعد اليوم.",
+      "text": "تسجيل واحد... تسعة وتسعين. القبو تحت مبنى سبعة عشر. لا تنزلوا بعد الغروب. لا أحد ينزل... بعد اليوم.",
       "voice": "Harry — شريط القبو ١٩٩٨ (ذكر)",
-      "chars": 160,
+      "chars": 99,
       "voice_id": "SOYHLrjzK2X1ezoPC6cr",
       "gender": "male",
-      "character": "شريط القبو ١٩٩٨"
+      "character": "شريط القبو ١٩٩٨",
+      "effectsReplaced": true,
+      "dspEffects": [
+        "recorder-clicks.mp3",
+        "footsteps-slow.mp3",
+        "scream-distant.mp3"
+      ]
     },
     {
       "id": "r3-footsteps",
       "file": "haunted-tape-footsteps-s17-corridor.mp3",
       "feeling": "مسكون",
       "effect": "خطوات + همهمة بعيدة",
-      "text": "[slow footsteps] [distant humming] خطوات في ممر القاعات... بعد منتصف الليل. [whispers] توقفت عند الباب... ولم تصل أبداً.",
+      "text": "[distant humming] خطوات في ممر القاعات... بعد منتصف الليل. [whispers] توقفت عند الباب... ولم تصل أبداً.",
       "voice": "River — ممر S17 (محايد)",
-      "chars": 120,
+      "chars": 103,
       "voice_id": "SAz9YHcvj6GT2YYXdXww",
       "gender": "neutral",
-      "character": "ممر S17"
+      "character": "ممر S17",
+      "effectsReplaced": true,
+      "dspEffects": [
+        "footsteps-slow.mp3"
+      ]
     },
     {
       "id": "r3-distress",
       "file": "urgent-phone-distress-call-guardian.mp3",
       "feeling": "عاجل",
       "effect": "هاتف + قطع خط",
-      "text": "[phone quality] اسمعني بسرعة. الحارس... ليس منّا. انقل الوثيقة قبل أن يصحو الجدار. لا تتصل بهذا الرقم مرة أخرى. [line cuts]",
+      "text": "[phone quality] اسمعني بسرعة. الحارس... ليس منّا. انقل الوثيقة قبل أن يصحو الجدار. لا تتصل بهذا الرقم مرة أخرى.",
       "voice": "Laura — العميلة المجهولة (أنثى) (أنثى)",
       "chars": 123,
       "voice_id": "FGY2WhTYpPnrIDTdsKH5",
       "gender": "female",
-      "character": "العميلة المجهولة (أنثى)"
+      "character": "العميلة المجهولة (أنثى)",
+      "effectsReplaced": true,
+      "dspEffects": [
+        "line-cut.mp3"
+      ]
     },
     {
       "id": "r3-fm-plate",
       "file": "distorted-tape-fm-lesson-plate.mp3",
       "feeling": "مشوه",
       "effect": "شريط قديم + همس",
-      "text": "[old tape recorder clicks] أنا ف.م. الصفيحة ليست أداة... إنها عين. [whispers] ضعها فوق الصفحة... وشاهد ما بين السطور يَتَنَفَّس.",
+      "text": "أنا ف.م. الصفيحة ليست أداة... إنها عين. [whispers] ضعها فوق الصفحة... وشاهد ما بين السطور يَتَنَفَّس.",
       "voice": "Lily — الكاتبة ف.م. (أنثى)",
       "chars": 128,
       "voice_id": "pFZP5JQG7iQjIQuC4Bku",
       "gender": "female",
-      "character": "الكاتبة ف.م."
+      "character": "الكاتبة ف.م.",
+      "effectsReplaced": true,
+      "dspEffects": [
+        "recorder-clicks.mp3"
+      ]
     },
     {
       "id": "r3-seventh-voice",
       "file": "haunted-tape-seventh-voice-echo.mp3",
       "feeling": "مسكون",
       "effect": "تنفس منخفض + وقفة طويلة",
-      "text": "[low breathing] عدّوا الأصوات في الأرشيف... ستجدون ستة. [long pause] أنا السابع. [whispers] ما نُسِيَ... يَنْتَظِر.",
+      "text": "عدّوا الأصوات في الأرشيف... ستجدون ستة. [long pause] أنا السابع. [whispers] ما نُسِيَ... يَنْتَظِر.",
       "voice": "Callum — الصوت السابع (ذكر)",
       "chars": 115,
       "voice_id": "N2lVS1w4EtoT3dr4eOWO",
       "gender": "male",
-      "character": "الصوت السابع"
+      "character": "الصوت السابع",
+      "effectsReplaced": true,
+      "dspEffects": [
+        "breath-low.mp3"
+      ]
     },
     {
       "id": "r3-writer",
       "file": "grieving-tape-writer-confession.mp3",
       "feeling": "حزين",
       "effect": "بكاء + خربشة قلم",
-      "text": "[soft crying] [pen scratching] أنا الكاتبة... نَسَخْتُ كل شيء وَخَبَّأْتُهُ. الحقيقة التي تُدْفَن... تخرج من الشقّ. سامحوني.",
+      "text": "[soft crying] أنا الكاتبة... نَسَخْتُ كل شيء وَخَبَّأْتُهُ. الحقيقة التي تُدْفَن... تخرج من الشقّ. سامحوني.",
       "voice": "Lily — الكاتبة ف.م. (أنثى)",
-      "chars": 124,
+      "chars": 107,
       "voice_id": "pFZP5JQG7iQjIQuC4Bku",
       "gender": "female",
-      "character": "الكاتبة ف.م."
+      "character": "الكاتبة ف.م.",
+      "effectsReplaced": true,
+      "dspEffects": [
+        "pen-scratch.mp3"
+      ]
     },
     {
       "id": "r3-spectrum",
       "file": "distorted-tape-broadcast-spectrum-room.mp3",
       "feeling": "مشوه",
       "effect": "بث راديوي مشوه",
-      "text": "[radio static tuning] غرفة الطيف. [distorted voice] التجربة الثالثة بدأت دون موافقة أحد. إن سمعتم هذا... فالصدى وصل قبلكم.",
+      "text": "غرفة الطيف. [distorted voice] التجربة الثالثة بدأت دون موافقة أحد. إن سمعتم هذا... فالصدى وصل قبلكم.",
       "voice": "Roger — بث غرفة الطيف (ذكر)",
       "chars": 122,
       "voice_id": "CwhRBWXzGAHq8TQ4Fs17",
       "gender": "male",
-      "character": "بث غرفة الطيف"
+      "character": "بث غرفة الطيف",
+      "effectsReplaced": true,
+      "dspEffects": [
+        "radio-tuning.mp3"
+      ]
     },
     {
       "id": "r3-knocking",
       "file": "tense-tape-knocking-archive-door.mp3",
       "feeling": "متوتر",
       "effect": "طرق على باب + صمت عميق",
-      "text": "[three slow knocks] طرق على باب الأرشيف كل ليلة جمعة. مقفل منذ ألفين وثمانية. [deep silence] لا أحد يفتح... ولا أحد يقف خلفه. [whispers] تقريباً.",
+      "text": "طرق على باب الأرشيف كل ليلة جمعة. مقفل منذ ألفين وثمانية. [deep silence] لا أحد يفتح... ولا أحد يقف خلفه. [whispers] تقريباً.",
       "voice": "Chris — شاهد الأرشيف (ذكر)",
-      "chars": 145,
+      "chars": 125,
       "voice_id": "iP95p4xoKVk53GoZ742B",
       "gender": "male",
-      "character": "شاهد الأرشيف"
+      "character": "شاهد الأرشيف",
+      "effectsReplaced": true,
+      "dspEffects": [
+        "knocking-slow.mp3"
+      ]
     },
     {
       "id": "r3-beacon",
       "file": "mysterious-phone-scan-beacon-confirmed.mp3",
       "feeling": "غامض",
       "effect": "هاتف + نغمات",
-      "text": "[phone quality] إشارة مؤكدة. البوصلة تَرَاك الآن. [beeps] الشبكة تتذكر من يمسح وما يمسح. واصل.",
+      "text": "[phone quality] إشارة مؤكدة. البوصلة تَرَاك الآن. الشبكة تتذكر من يمسح وما يمسح. واصل.",
       "voice": "Matilda — شبكة المنارة (أنثى) (أنثى)",
       "chars": 94,
       "voice_id": "XrExE9yKIg1WjnnlVkGX",
       "gender": "female",
-      "character": "شبكة المنارة (أنثى)"
+      "character": "شبكة المنارة (أنثى)",
+      "effectsReplaced": true,
+      "dspEffects": [
+        "beeps-monitor.mp3"
+      ]
     },
     {
       "id": "r3-field-scan",
@@ -479,24 +525,32 @@
       "file": "whispering-tape-twin-versions.mp3",
       "feeling": "هامس",
       "effect": "همس + أزيز شريط",
-      "text": "[whispers] نسختان... لعام واحد. إحداهما تكذب على الأخرى. اقرأهما معاً... وستَرَى الشقّ. [tape hiss]",
+      "text": "[whispers] نسختان... لعام واحد. إحداهما تكذب على الأخرى. اقرأهما معاً... وستَرَى الشقّ.",
       "voice": "Lily — الكاتبة ف.م. (أنثى)",
       "chars": 99,
       "voice_id": "pFZP5JQG7iQjIQuC4Bku",
       "gender": "female",
-      "character": "الكاتبة ف.م."
+      "character": "الكاتبة ف.م.",
+      "effectsReplaced": true,
+      "dspEffects": [
+        "tape-hiss.mp3"
+      ]
     },
     {
       "id": "r3-heirs",
       "file": "distorted-tape-heirs-fake-warning.mp3",
       "feeling": "مشوه",
       "effect": "صوت منخفض مشوه + طقطقة نار",
-      "text": "[distorted low voice] نحن الورثة. لا تنشروا ما لا تملكون. الوثائق التي بين أيديكم كتبناها. [fire crackling] انسحبوا... وأنتم قادرون.",
+      "text": "[distorted low voice] نحن الورثة. لا تنشروا ما لا تملكون. الوثائق التي بين أيديكم كتبناها. انسحبوا... وأنتم قادرون.",
       "voice": "Adam — الوارث (ذكر)",
-      "chars": 132,
+      "chars": 115,
       "voice_id": "pNInz6obpgDQGcFmaJgB",
       "gender": "male",
-      "character": "الوارث"
+      "character": "الوارث",
+      "effectsReplaced": true,
+      "dspEffects": [
+        "fire-crackle.mp3"
+      ]
     }
   ],
   "voiceCast": [
