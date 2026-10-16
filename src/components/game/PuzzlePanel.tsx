@@ -46,7 +46,7 @@ export default function PuzzlePanel({
       : await game.submitPuzzle(puzzle.id, answer);
     setBusy(false);
     const r = res.data.result as
-      | { correct: boolean; message: string; pointsAwarded?: number; shard?: { word: string }; rankUp?: { name: string }; finished?: boolean; externalCompleted?: { name: string } }
+      | { correct: boolean; message: string; pointsAwarded?: number; shard?: { word: string }; rankUp?: { name: string }; finished?: boolean; externalCompleted?: { name: string }; pathCompleted?: { name: string; seal: string } }
       | undefined;
     if (!res.ok || !r) {
       sfx.error();
@@ -54,7 +54,7 @@ export default function PuzzlePanel({
       setFeedback({ ok: false, msg: res.data.error ?? "خلل في الإرسال." });
       return;
     }
-    if (r.correct) {
+      if (r.correct) {
       sfx.success();
       setFeedback({
         ok: true,
@@ -63,9 +63,11 @@ export default function PuzzlePanel({
             ? `${r.message} — اكتمل البروتوكول التاسع بأكمله!`
             : r.shard
               ? `${r.message} حصلت على شظية: «${r.shard.word}».`
-              : r.externalCompleted
-                ? `${r.message} اكتمل ملحق «${r.externalCompleted.name}»!`
-                : r.message,
+              : r.pathCompleted
+                ? `${r.message} اكتمل مسار «${r.pathCompleted.name}» — الخِتم: ${r.pathCompleted.seal}.`
+                : r.externalCompleted
+                  ? `${r.message} اكتمل ملحق «${r.externalCompleted.name}»!`
+                  : r.message,
       });
       setAnswer("");
     } else {

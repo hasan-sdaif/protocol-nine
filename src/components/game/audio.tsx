@@ -77,6 +77,131 @@ class Sfx {
 
 export const sfx = new Sfx();
 
+// ── راديو الإرساليات: مشغّل شامل واحد للتشغيل التلقائي ──
+// إرسالية واحدة تعمل في أي لحظة — تُوقف سابقتها تلقائياً
+type DeckTrack = { src: string; label: string };
+type DeckListener = (track: DeckTrack | null) => void;
+
+class TransmissionDeck {
+  private audio: HTMLAudioElement | null = null;
+  private ring: HTMLAudioElement | null = null;
+  private listeners = new Set<DeckListener>();
+  track: DeckTrack | null = null;
+  playing = false;
+  progress = 0;
+  /** آخر مقطع شُغّل — لمنع تكرار نفس الإرسالية تلقائياً */
+  lastAuto: string | null = null;
+
+  onChange(fn: DeckListener): () => void {
+    this.listeners.add(fn);
+    return () => this.listeners.delete(fn);
+  }
+
+  private emit() {
+    for (const fn of this.listeners) fn(this.playing ? this.track : null);
+  }
+
+  stop() {
+    this.ring?.pause();
+    this.ring = null;
+    if (this.audio) {
+      this.audio.pause();
+      this.audio.ontimeupdate = null;
+      this.audio.onended = null;
+    }
+    this.audio = null;
+    if (this.playing) {
+      this.playing = false;
+      this.progress = 0;
+      this.emit();
+    }
+  }
+
+  /** شغّل إرسالية: رنة قصيرة ثم الصوت — بلا أي API (ملفات ثابتة) */
+  play(src: string, label = "إرسالية هاتفية", opts?: { ring?: boolean }) {
+    if (typeof window === "undefined") return;
+    this.stop();
+    this.track = { src, label };
+    if (sfx.muted) return;
+    const useRing = opts?.ring !== false;
+    const startVoice = () => {
+      const voice = new Audio(src);
+      this.audio = voice;
+      voice.volume = 0.95;
+      this.playing = true;
+      this.emit();
+      voice.ontimeupdate = () => {
+        if (voice.duration > 0) {
+          this.progress = voice.currentTime / voice.duration;
+          this.emit();
+        }
+      };
+      voice.onended = () => {
+        this.playing = false;
+        this.progress = 0;
+        this.emit();
+      };
+      void voice.play().catch(() => {
+        this.playing = false;
+        this.emit();
+      });
+    };
+    if (useRing) {
+      const ring = new Audio(AUDIO_SFX.ring);
+      ring.volume = 0.42;
+      this.ring = ring;
+      void ring.play().catch(() => undefined);
+      window.setTimeout(() => {
+        ring.pause();
+        this.ring = null;
+        startVoice();
+      }, 2400);
+    } else {
+      startVoice();
+    }
+  }
+}
+
+export const deck = new TransmissionDeck();
+
+// ── التشغيل التلقائي للإرساليات السياقية ─────────────────
+// يعمل بعد أول تفاعل من المستخدم (سياسة المتصفحات)،
+// ويحترم الكتم، ولا يكرر نفس المقطع مرتين متتاليتين
+export function useAutoTransmission(src: string | null | undefined, label: string, opts?: { ring?: boolean }) {
+  const [, force] = useState(0);
+  useEffect(() => {
+    const off = deck.onChange(() => force((n) => n + 1));
+    return off;
+  }, []);
+  useEffect(() => {
+    if (!src) return;
+    if (sfx.muted) return;
+    if (deck.lastAuto === src) return;
+    deck.lastAuto = src;
+    deck.play(src, label, opts);
+  }, [src]);
+}
+
+// ── مؤشر الإرسالية الحية العائم (يظهر أثناء البث) ───────
+export function LiveTransmissionBadge({ bottomOffset = "1.25rem" }: { bottomOffset?: string }) {
+  const [track, setTrack] = useState<DeckTrack | null>(null);
+  useEffect(() => deck.onChange(setTrack), []);
+  if (!track) return null;
+  return (
+    <button
+      type="button"
+      onClick={() => deck.stop()}
+      className="fixed bottom-[--bo] z-50 flex items-center gap-2 rounded-full border border-primary/40 bg-card/95 px-3 py-1.5 backdrop-blur-sm"
+      style={{ bottom: bottomOffset, insetInlineStart: "1rem" } as React.CSSProperties}
+      aria-label={`إرسالية تعمل: ${track.label} — إيقاف`}
+    >
+      <span className="rec-dot h-2 w-2 rounded-full bg-primary" />
+      <span className="max-w-[150px] truncate text-[0.68rem] text-primary">{track.label}</span>
+      <span className="font-mono text-[0.6rem] text-muted-foreground" dir="ltr">■ STOP</span>
+    </button>
+  );
+}
+
 // ── خلّق مورس محلياً (مذبذب — بلا أي API) ─────────────────
 let audioCtx: AudioContext | null = null;
 export function playMorseLocal(signal: string, wpm = 14): number {

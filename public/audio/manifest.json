@@ -20,9 +20,9 @@
       "file": "deep-phone-intro-first-transmission.mp3",
       "feeling": "غامض",
       "effect": "هاتف",
-      "text": "إن كنتَ تسمع هذه الإرسالية... فقد اخترناك. لا تثق بما تعرفه عن جامعتك. تحت كل حجرٍ حرف، وفي كل صوتٍ رقم. تسعةُ حراسٍ يحيطون بسرٍّ لم يُسمح لأحدٍ بمعرفته. ما حُذف لم يختفِ. ما أُحرق لم يمت. ما نُسي ينتظر من يتذكر. حاول الوصول إلى البروتوكول التاسع.",
+      "text": "[phone ringing] إن كنتَ تسمع هذه الإرسالية... فقد اخترناك. لا تثق بما تعرفه عن جامعتك. تحت كل حجرٍ حرف، وفي كل صوتٍ رقم. تسعةُ حراسٍ يحيطون بسرٍّ لم يُسْمَحْ لأحدٍ بمعرفته. ما حُذِفَ لم يَخْتَفِ. ما أُحْرِقَ لم يَمُتْ. ما نُسي ينتظر من يتذكر. حاول الوصول إلى البروتوكول التاسع. [static]",
       "voice": "deep male",
-      "chars": 247
+      "chars": 286
     },
     {
       "id": "recruit",
@@ -146,9 +146,9 @@
       "file": "deep-phone-finale-you-are-the-ninth.mp3",
       "feeling": "عميق",
       "effect": "هاتف",
-      "text": "الآن فهمت. البروتوكولات التسعة لم تختبر أحداً قبلك... بل اختبرتك أنت. منذ أول إرسالية وأنت داخل المختبر. الكاتبة كتبت: ما حُذف لم يختفِ، وما أُحرق لم يمت، وما نُسي ينتظر من يتذكر. أنت التاسع. كنتَ دائماً. اكتب اسمك على الجدار... وانقل الحقيقة.",
+      "text": "[phone ringing] الآن فهمت. البروتوكولات التسعة لم تختبر أحداً قبلك... بل اختبرتك أنت. منذ أول إرسالية وأنت داخل المختبر. الكاتبة كتبت: ما حُذف لم يَخْتَفِ، وما أُحرق لم يَمُتْ، وما نُسي ينتظر من يتذكر. أنت التاسع. كنتَ دائماً. اكتب اسمك على الجدار... وانقل الحقيقة. [static]",
       "voice": "deep male",
-      "chars": 243
+      "chars": 274
     }
   ],
   "sfx": [
@@ -181,6 +181,208 @@
       "id": "sfx-success",
       "file": "sfx-ui-success.mp3",
       "description": "نغمة نجاح — نغمتان جيبيتان ناعمتان 620Hz (120ms) ثم 930Hz (180ms) بتداخل بسيط"
+    }
+  ],
+  "aa_audio": [
+    {
+      "id": "aa-p0-archive-origin",
+      "file": "mysterious-phone-p0-archive-origin.mp3",
+      "feeling": "غامض",
+      "effect": "هاتف",
+      "text": "[old tape recorder clicks] قبل البروتوكولات التسعة... كان هناك الأرشيف. عام ألفين وأربعة وُلد مشروع الطيف في صمت... وفتاة تَعْرِفُهَا الوثائق بالحرفين ف.م. نَسَخَتْ كل وثيقة وَخَبَّأَتْهَا حيث يعني لها كل مكان شيئاً. أربع بوابات صغيرة تفصلك عن الحقيقة الأولى. القيصر هنا يتكلم العربية... بإزاحة أربع. ابدأ من البذرة.",
+      "voice": "deep male",
+      "chars": 316
+    },
+    {
+      "id": "aa-alliance-trust",
+      "file": "deep-phone-alliance-trust.mp3",
+      "feeling": "عميق",
+      "effect": "هاتف",
+      "text": "الحلف يُبنى على الثقة... والثقة تُختبر بالمعلومة. شارك ما يكفي... واحتفظ بما يزيد. حين تفكر في الانفصال... اجعله هادئاً.",
+      "voice": "deep male",
+      "chars": 120
+    },
+    {
+      "id": "aa-pulse-daily",
+      "file": "mysterious-phone-pulse-daily.mp3",
+      "feeling": "غامض",
+      "effect": "هاتف",
+      "text": "الأرشيف ينبض كل يوم مرة. إشارة قصيرة لمن يراقب. فكّها اليوم... أو انتظر نبضة الغد.",
+      "voice": "deep male",
+      "chars": 82
+    },
+    {
+      "id": "aa-plate-transparent",
+      "file": "deep-phone-plate-transparent.mp3",
+      "feeling": "عميق",
+      "effect": "هاتف",
+      "text": "الصفيحة الشفافة تكشف ما بين السطور. بعض الوثائق تحمل طبقة ثانية لا تُقرأ إلا بمن يملكها. اقتنها بالنقاط... إن استحققتها.",
+      "voice": "deep male",
+      "chars": 120
+    },
+    {
+      "id": "aa-sorting-room",
+      "file": "tense-phone-sorting-room.mp3",
+      "feeling": "متوتر",
+      "effect": "هاتف",
+      "text": "ليست كل وثيقة وُضعت لأجلك. الورثة يزيفون بذكاء: رمز ينحرف بحرف... وتاريخ لا يستقيم. فرّز بعين الباحث... لا بعين المتعجل.",
+      "voice": "deep male",
+      "chars": 120
+    },
+    {
+      "id": "aa-isa-town-structure",
+      "file": "deep-phone-isa-town-structure.mp3",
+      "feeling": "عميق",
+      "effect": "هاتف",
+      "text": "في مدينة عيسى أجرى الطيف تجربته الهندسية: نماذج تُبنى بتعليمات ناقصة عمداً... ليكشف النقص كيف يتصرف العقل أمام المعلومة الناقصة.",
+      "voice": "deep male",
+      "chars": 128
+    },
+    {
+      "id": "aa-manama-diagnosis",
+      "file": "mysterious-phone-manama-diagnosis.mp3",
+      "feeling": "غامض",
+      "effect": "هاتف",
+      "text": "في المنامة سُئل أناس عن تشخيصات متضاربة لأجسادهم. حين يتعلق القرار بالجسد... ينكشف أعمق منطق وأضعفه.",
+      "voice": "deep male",
+      "chars": 100
+    },
+    {
+      "id": "aa-quiet-secession",
+      "file": "cold-phone-quiet-secession.mp3",
+      "feeling": "بارد",
+      "effect": "هاتف",
+      "text": "أحد الأعضاء اختار مسار الوحيد. لا تسألوا من. استمروا.",
+      "voice": "deep male",
+      "chars": 53
+    },
+    {
+      "id": "aa-missing-26",
+      "file": "mysterious-phone-missing-26.mp3",
+      "feeling": "غامض",
+      "effect": "هاتف",
+      "text": "الوثيقة الغائبة لم تُخفَ في الظلام. كانت دائماً في وضح النهار. ستة وعشرون... رقم النقص في قلب الكمال.",
+      "voice": "deep male",
+      "chars": 101
+    }
+  ],
+  "r3_audio": [
+    {
+      "id": "r3-scream",
+      "file": "distorted-tape-scream-1998-basement.mp3",
+      "feeling": "مشوه",
+      "effect": "شريط قديم + صراخ بعيد + خطوات",
+      "text": "[old tape recorder clicks] تسجيل واحد... تسعة وتسعين. القبو تحت مبنى سبعة عشر. [slow footsteps] لا تنزلوا بعد الغروب. [distant scream] لا أحد ينزل... بعد اليوم.",
+      "voice": "deep male",
+      "chars": 160
+    },
+    {
+      "id": "r3-footsteps",
+      "file": "haunted-tape-footsteps-s17-corridor.mp3",
+      "feeling": "مسكون",
+      "effect": "خطوات + همهمة بعيدة",
+      "text": "[slow footsteps] [distant humming] خطوات في ممر القاعات... بعد منتصف الليل. [whispers] توقفت عند الباب... ولم تصل أبداً.",
+      "voice": "deep male",
+      "chars": 120
+    },
+    {
+      "id": "r3-distress",
+      "file": "urgent-phone-distress-call-guardian.mp3",
+      "feeling": "عاجل",
+      "effect": "هاتف + قطع خط",
+      "text": "[phone quality] اسمعني بسرعة. الحارس... ليس منّا. انقل الوثيقة قبل أن يصحو الجدار. لا تتصل بهذا الرقم مرة أخرى. [line cuts]",
+      "voice": "deep male",
+      "chars": 123
+    },
+    {
+      "id": "r3-fm-plate",
+      "file": "distorted-tape-fm-lesson-plate.mp3",
+      "feeling": "مشوه",
+      "effect": "شريط قديم + همس",
+      "text": "[old tape recorder clicks] أنا ف.م. الصفيحة ليست أداة... إنها عين. [whispers] ضعها فوق الصفحة... وشاهد ما بين السطور يَتَنَفَّس.",
+      "voice": "deep male",
+      "chars": 128
+    },
+    {
+      "id": "r3-seventh-voice",
+      "file": "haunted-tape-seventh-voice-echo.mp3",
+      "feeling": "مسكون",
+      "effect": "تنفس منخفض + وقفة طويلة",
+      "text": "[low breathing] عدّوا الأصوات في الأرشيف... ستجدون ستة. [long pause] أنا السابع. [whispers] ما نُسِيَ... يَنْتَظِر.",
+      "voice": "deep male",
+      "chars": 115
+    },
+    {
+      "id": "r3-writer",
+      "file": "grieving-tape-writer-confession.mp3",
+      "feeling": "حزين",
+      "effect": "بكاء + خربشة قلم",
+      "text": "[soft crying] [pen scratching] أنا الكاتبة... نَسَخْتُ كل شيء وَخَبَّأْتُهُ. الحقيقة التي تُدْفَن... تخرج من الشقّ. سامحوني.",
+      "voice": "deep male",
+      "chars": 124
+    },
+    {
+      "id": "r3-spectrum",
+      "file": "distorted-tape-broadcast-spectrum-room.mp3",
+      "feeling": "مشوه",
+      "effect": "بث راديوي مشوه",
+      "text": "[radio static tuning] غرفة الطيف. [distorted voice] التجربة الثالثة بدأت دون موافقة أحد. إن سمعتم هذا... فالصدى وصل قبلكم.",
+      "voice": "deep male",
+      "chars": 122
+    },
+    {
+      "id": "r3-knocking",
+      "file": "tense-tape-knocking-archive-door.mp3",
+      "feeling": "متوتر",
+      "effect": "طرق على باب + صمت عميق",
+      "text": "[three slow knocks] طرق على باب الأرشيف كل ليلة جمعة. مقفل منذ ألفين وثمانية. [deep silence] لا أحد يفتح... ولا أحد يقف خلفه. [whispers] تقريباً.",
+      "voice": "deep male",
+      "chars": 145
+    },
+    {
+      "id": "r3-beacon",
+      "file": "mysterious-phone-scan-beacon-confirmed.mp3",
+      "feeling": "غامض",
+      "effect": "هاتف + نغمات",
+      "text": "[phone quality] إشارة مؤكدة. البوصلة تَرَاك الآن. [beeps] الشبكة تتذكر من يمسح وما يمسح. واصل.",
+      "voice": "deep male",
+      "chars": 94
+    },
+    {
+      "id": "r3-field-scan",
+      "file": "urgent-phone-field-scan-briefing.mp3",
+      "feeling": "عاجل",
+      "effect": "هاتف",
+      "text": "[phone quality] وكيل، الأكواد منتشرة في الحرم. كل رمز يحرس معلومة... أو اختباراً. وجّه الكاميرا... ودع الشبكة تقودك.",
+      "voice": "deep male",
+      "chars": 116
+    },
+    {
+      "id": "r3-gates",
+      "file": "deep-phone-paths-seven-gates.mp3",
+      "feeling": "عميق",
+      "effect": "هاتف",
+      "text": "[phone quality] سبع بوابات... سبعة مسارات. كل مسار يفتح باباً لا يعرفه حتى الوسيط. المفاتيح مبعثرة في الحكايات. ابدأ... وستُرى.",
+      "voice": "deep male",
+      "chars": 127
+    },
+    {
+      "id": "r3-twin",
+      "file": "whispering-tape-twin-versions.mp3",
+      "feeling": "هامس",
+      "effect": "همس + أزيز شريط",
+      "text": "[whispers] نسختان... لعام واحد. إحداهما تكذب على الأخرى. اقرأهما معاً... وستَرَى الشقّ. [tape hiss]",
+      "voice": "deep male",
+      "chars": 99
+    },
+    {
+      "id": "r3-heirs",
+      "file": "distorted-tape-heirs-fake-warning.mp3",
+      "feeling": "مشوه",
+      "effect": "صوت منخفض مشوه + طقطقة نار",
+      "text": "[distorted low voice] نحن الورثة. لا تنشروا ما لا تملكون. الوثائق التي بين أيديكم كتبناها. [fire crackling] انسحبوا... وأنتم قادرون.",
+      "voice": "deep male",
+      "chars": 132
     }
   ]
 }

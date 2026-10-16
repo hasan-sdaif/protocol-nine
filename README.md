@@ -33,8 +33,13 @@ A complete, production-ready **Alternate Reality Game** engine — merging the t
 | 🔍 **The Transparent Plate** | A point-purchased lens revealing hidden layers *between the lines* across protocols, the map, and the vault |
 | 🗝️ **Verification Phrases** | Each completed protocol reveals a social passphrase — proof to other players that you crossed the same gate |
 | 🏛️ **The Vault of Nine** | 9 shards (8 protocols + the origin's «الغائب») assembled in a 9-slot riddle vault — the tenth lock is you |
+| 🛤️ **Six Field Paths** | Parallel side-quests unlocked as protocols fall: الصدى (the Echo), الكاتبة (the Writer), الحارس (the Guardian), الورثة (the Heirs), المختبر العاشر (the Tenth Lab), البوصلة (the Compass) — 18 chained puzzles, 1,980 points, each path ends in a **seal** (خِتم) granted only to those who finish it |
+| 📷 **QR Beacons — Inside the University** | 14 QR codes scattered across the real Sakhir campus. Students scan them **with the in-app camera** (jsQR) and get instantly tested — 8 beacons carry bonus tests. Includes an **Organizer Studio** (password `1998`) that renders printable QR sheets to physically deploy the beacons |
+| 📱 **A Different UX Per Device** | Not responsive shrinking — three genuinely different shells: **desktop** = command center (icon rail + live intel sidebar + wire ticker + keyboard shortcuts `0-9`), **phone** = field-agent app (bottom tab bar with a raised center scan button, thumb-first), **tablet** = ops room (horizontal tabs, two-column grids) |
+| 🔊 **Auto-Playing Transmissions** | Contextual recordings start by themselves where they must be heard — entering a protocol, opening a path, scanning a beacon. A single global deck with a floating live indicator; mute is always respected |
+| 📼 **Old Tapes with Real Effects** | 1998 basement screams, footsteps in the S17 corridor, knocking on the archive door, the twins' whisper, the heirs' distorted warning — generated with ElevenLabs v4 bracket sound-effects and Arabic diacritics (تشكيل) for correct pronunciation |
 | 🏆 **Live Competition** | Individual + team leaderboards, podium, the Wall of Nine, the Mediator's live event feed — updated every 20 seconds |
-| 🎧 **Static Phone Archive** | 31 MP3 recordings with authentic phone DSP (300–3400 Hz band-pass) — generated **once at development time** via ElevenLabs v4, stored in the repo, **zero runtime API calls** |
+| 🎧 **Static Phone Archive** | 44 MP3 recordings with authentic phone DSP (300–3400 Hz band-pass) — generated **once at development time** via ElevenLabs v4, stored in the repo, **zero runtime API calls** |
 | 🔒 **Eternal Sessions** | httpOnly cookie + localStorage token backup, scrypt-hashed passphrases, 10-year sessions — a refresh never kicks an agent out |
 
 ## 🚀 Quick Start
@@ -63,18 +68,20 @@ No API keys are required at runtime. All audio is pre-generated and committed un
 1. **Boot** — a CRT terminal wakes up: `> حالة الوثيقة AA-4-26: مفقودة…`
 2. **Field Manual** — a guided intro for newcomers: the story, the rules, the honor code
 3. **Enlist** — codename + passphrase only, two pages of terms (read page two… or don't)
-4. **Descend** — Protocol Zero → the Nine. Guardian transmissions (phone audio + transcript), cipher materials (codes, morse, numbers, stego, invisible ink, map navigation, vault slots), three-tier hint economy, wrong-answer bleed
-5. **Compete** — daily pulse streaks, the sorting room, external annexes (Engineering — Isa Town, Health Sciences — Manama), alliances, the leaderboard, the Wall of Nine
-6. **Finish** — the vault of nine shards, the last question, Document 101: *you*
+4. **Descend** — Protocol Zero → the Nine. Guardian transmissions (phone audio + transcript, auto-playing), cipher materials (codes, morse, numbers, stego, invisible ink, map navigation, vault slots), three-tier hint economy, wrong-answer bleed
+5. **Branch** — six field paths open as protocols fall; scan the campus QR beacons (camera or manual code) and pass their on-site tests
+6. **Compete** — daily pulse streaks, the sorting room, external annexes (Engineering — Isa Town, Health Sciences — Manama), alliances, the leaderboard, the Wall of Nine
+7. **Finish** — the vault of nine shards, the last question, Document 101: *you*
 
 ## 🛠️ Tech Stack
 
 - **Next.js 16** (App Router) + **TypeScript 5** + React 19
 - **Tailwind CSS 4** + shadcn/ui (New York) — RTL-first, mobile-first, dark CRT aesthetic
-- **Prisma ORM** + SQLite — Agent / Session / Solve / HintUnlock / Journal / DailyPulse / SortAttempt / Team / TeamMessage
+- **Prisma ORM** + SQLite — Agent / Session / Solve / HintUnlock / Journal / DailyPulse / SortAttempt / ScanLog / Team / TeamMessage
 - **Zero-dependency crypto** — cipher engine is pure TypeScript, shared client/server
+- **jsQR** for in-app camera QR scanning, **qrcode** for the organizer's printable sheets
 - **scrypt** password hashing, 10-year httpOnly sessions
-- Audio: ElevenLabs v4 (dev-time only) → ffmpeg phone DSP → static MP3s
+- Audio: ElevenLabs v4 with bracket sound-effects + Arabic tashkeel (dev-time only) → ffmpeg phone DSP → static MP3s
 
 ## 📁 Project Structure
 

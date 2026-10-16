@@ -30,6 +30,9 @@ const POINTS: Record<string, number> = {
   "p5-a": 140, "p5-b": 140,
   "p6-a": 160, "p6-b": 160,
   "ext-eng-a": 120, "ext-eng-b": 140, "ext-hsc-a": 120,
+  "path-echo-1": 90, "path-echo-2": 110, "path-echo-3": 130,
+  "path-writer-1": 90, "path-writer-2": 110, "path-writer-3": 130,
+  "path-guardian-1": 90, "path-guardian-2": 110,
 };
 
 function bahrainToday(): string {
@@ -44,6 +47,7 @@ async function main() {
   await db.team.deleteMany();
   await db.sortAttempt.deleteMany();
   await db.dailyPulse.deleteMany();
+  await db.scanLog.deleteMany();
   await db.journal.deleteMany();
   await db.hintUnlock.deleteMany();
   await db.solve.deleteMany();
@@ -56,14 +60,27 @@ async function main() {
   interface SeedAgent {
     codename: string; memberNo: number; puzzles: string[]; plate?: boolean;
     pulseStreak?: number; lastSeenHours?: number;
+    scans?: { code: string; points: number; test?: { bonus: number } }[];
   }
 
   const seeds: SeedAgent[] = [
-    { codename: "عين الصقر", memberNo: 4471, puzzles: [...P0, ...P1, ...P2, ...P3, ...P4], pulseStreak: 3, lastSeenHours: 1 },
-    { codename: "ذاكرة الماء", memberNo: 2013, puzzles: [...P0, ...P1, ...P2, ...P3, ...P4, ...P5, ...P6], plate: true, pulseStreak: 5, lastSeenHours: 0.2 },
-    { codename: "الحبر الأخير", memberNo: 1908, puzzles: [...P0, ...P1, ...P2], pulseStreak: 1, lastSeenHours: 4 },
+    { codename: "عين الصقر", memberNo: 4471, puzzles: [...P0, ...P1, ...P2, ...P3, ...P4, "path-echo-1", "path-echo-2"], pulseStreak: 3, lastSeenHours: 1,
+      scans: [
+        { code: "P9-QR-S3-01", points: 45 },
+        { code: "P9-QR-S17-05", points: 55, test: { bonus: 30 } },
+      ] },
+    { codename: "ذاكرة الماء", memberNo: 2013, puzzles: [...P0, ...P1, ...P2, ...P3, ...P4, ...P5, ...P6, "path-echo-1", "path-echo-2", "path-echo-3", "path-writer-1", "path-writer-2", "path-writer-3"], plate: true, pulseStreak: 5, lastSeenHours: 0.2,
+      scans: [
+        { code: "P9-QR-S3-01", points: 45, test: { bonus: 30 } },
+        { code: "P9-QR-S17-05", points: 55, test: { bonus: 30 } },
+        { code: "P9-QR-BUS-02", points: 30 },
+        { code: "P9-QR-GARDEN-03", points: 40, test: { bonus: 25 } },
+      ] },
+    { codename: "الحبر الأخير", memberNo: 1908, puzzles: [...P0, ...P1, ...P2, "path-writer-1"], pulseStreak: 1, lastSeenHours: 4,
+      scans: [{ code: "P9-QR-S3-01", points: 45 }] },
     { codename: "صمت المكتبة", memberNo: 3011, puzzles: [...P0], lastSeenHours: 20 },
-    { codename: "بوابة الشرق", memberNo: 5040, puzzles: [...P0, ...P1, ...P2, ...P3, "ext-eng-a", "ext-eng-b", "ext-hsc-a"], lastSeenHours: 8 },
+    { codename: "بوابة الشرق", memberNo: 5040, puzzles: [...P0, ...P1, ...P2, ...P3, "ext-eng-a", "ext-eng-b", "ext-hsc-a", "path-guardian-1"], lastSeenHours: 8,
+      scans: [{ code: "P9-QR-S3-01", points: 45, test: { bonus: 30 } }] },
   ];
 
   const today = bahrainToday();
@@ -72,6 +89,8 @@ async function main() {
   for (const [i, s] of seeds.entries()) {
     let points = s.puzzles.reduce((a, p) => a + (POINTS[p] ?? 0), 0);
     if (s.pulseStreak) points += 40 + Math.min(s.pulseStreak - 1, 5) * 10;
+    const scanPoints = (s.scans ?? []).reduce((a, c) => a + c.points + (c.test?.bonus ?? 0), 0);
+    points += scanPoints;
 
     const agent = await db.agent.create({
       data: {
@@ -82,6 +101,7 @@ async function main() {
         plateUnlocked: !!s.plate,
         pulseStreak: s.pulseStreak ?? 0,
         lastPulseDate: s.pulseStreak ? today : null,
+        scansCount: (s.scans ?? []).length,
         createdAt: new Date(now - (14 - i * 2) * 24 * hour),
         lastSeenAt: new Date(now - (s.lastSeenHours ?? 3) * hour),
       },
@@ -114,6 +134,51 @@ async function main() {
     if (s.pulseStreak) {
       await db.dailyPulse.create({
         data: { agentId: agent.id, dateStr: today, solved: true, attempts: 1, points: 40 + Math.min(s.pulseStreak - 1, 5) * 10 },
+      });
+    }
+
+    // منارات ممسوحة ميدانياً + اختباراتها
+    for (const [j, c] of (s.scans ?? []).entries()) {
+      await db.scanLog.create({
+        data: {
+          agentId: agent.id,
+          code: c.code,
+          points: c.points,
+          testSolved: !!c.test,
+          testPoints: c.test?.bonus ?? 0,
+          createdAt: new Date(now - (18 - j * 2 - i) * hour),
+        },
+      });
+      await db.journal.create({
+        data: {
+          agentId: agent.id,
+          kind: "scan",
+          text: `مسحت منارة ميدانية «${c.code}» (+${c.points} نقطة).`,
+          createdAt: new Date(now - (18 - j * 2 - i) * hour),
+        },
+      });
+      if (c.test) {
+        await db.journal.create({
+          data: {
+            agentId: agent.id,
+            kind: "scan",
+            text: `اجتزت اختبار المنارة «${c.code}» (+${c.test.bonus} نقطة).`,
+            createdAt: new Date(now - (17.6 - j * 2 - i) * hour),
+          },
+        });
+      }
+    }
+
+    // إتمام مسارات كاملة → أحداث الختوم
+    const donePaths = s.puzzles.filter((p) => p.startsWith("path-"));
+    if (donePaths.some((p) => p.startsWith("path-echo-")) && donePaths.filter((p) => p.startsWith("path-echo-")).length === 3) {
+      await db.journal.create({
+        data: { agentId: agent.id, kind: "path", text: "اكتمل مسار «الصدى» — حصلت على الخِتم: الصدى.", createdAt: new Date(now - 12 * hour) },
+      });
+    }
+    if (donePaths.filter((p) => p.startsWith("path-writer-")).length === 3) {
+      await db.journal.create({
+        data: { agentId: agent.id, kind: "path", text: "اكتمل مسار «الكاتبة» — حصلت على الخِتم: الحبر.", createdAt: new Date(now - 10 * hour) },
       });
     }
     if (s.plate) {
@@ -159,6 +224,7 @@ async function main() {
   console.log("  وكلاء:", created.map((c) => `${c.codename} (${c.points})`).join("، "));
   console.log("  الحلف: عيون الليل — 314159 (٣ أعضاء)");
   console.log("  نبضات اليوم:", seeds.filter((s) => s.pulseStreak).length);
+  console.log("  منارات ممسوحة:", seeds.reduce((a, s) => a + (s.scans?.length ?? 0), 0), "— أختمة مسارات: ٢");
 }
 
 main()

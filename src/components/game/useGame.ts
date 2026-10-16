@@ -175,6 +175,31 @@ export function useGame() {
     return res;
   }, [refresh]);
 
+  const scanCode = useCallback(
+    async (code: string) => {
+      const res = await api<{ result: Record<string, unknown> }>("/api/game/scan", {
+        action: "scan",
+        code,
+      });
+      await refresh();
+      return res;
+    },
+    [refresh]
+  );
+
+  const answerScanTest = useCallback(
+    async (code: string, answer: string) => {
+      const res = await api<{ result: Record<string, unknown> }>("/api/game/scan", {
+        action: "test",
+        code,
+        answer,
+      });
+      await refresh();
+      return res;
+    },
+    [refresh]
+  );
+
   const saveFinaleAnswer = useCallback(async (answer: string) => {
     return api("/api/game/finale", { answer });
   }, []);
@@ -199,6 +224,8 @@ export function useGame() {
     judgeDoc,
     teamAction,
     buyPlate,
+    scanCode,
+    answerScanTest,
     saveFinaleAnswer,
     logout,
   };

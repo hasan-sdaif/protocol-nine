@@ -2,7 +2,7 @@
 
 // ═════════════════════════════════════════════════════════════════════
 // CampusMap — الخريطة التفاعلية لجامعة البحرين (حرم الصخير)
-// هوية «غرفة عمليات ليلية»: كهرماني/ذهبي على أسود + رؤية ليلية تكتيكية
+// هوية «المخطط الهندسي الأزرق الليلي» (Blueprint Ice-Blue): سماوي/جليدي على كحلي عميق
 // SVG + React فقط — تكبير/تحريك/قرص يدويّة بلا أي مكتبة خارجية.
 // ═════════════════════════════════════════════════════════════════════
 
@@ -21,6 +21,8 @@ export interface CampusMapProps {
   unlockedAreas: string[];
   /** رموز مبانٍ مميّزة بتوهج أخضر */
   highlightCodes?: string[];
+  /** رموز مبانٍ عليها «منارة ميدانية» — معيّن سماوي نابض فوق مركز المبنى */
+  beaconCodes?: string[];
   /** يُستدعى عند اختيار مبنى (نقراً أو بلوحة المفاتيح) */
   onSelectBuilding?: (code: string) => void;
   /** ارتفاع الحاوية — افتراضياً "70vh" */
@@ -60,21 +62,27 @@ const GRID_D = (() => {
 // CSS الخاص بعناصر SVG (مضمّن داخل <svg> — أسماء مسبوقة بـ cmp-)
 const SVG_CSS = `
 .cmp-b { cursor: pointer; outline: none; }
-.cmp-b .cmp-shape { fill: rgba(245,158,11,.10); stroke: rgba(245,158,11,.70); stroke-width: 1.1; transition: fill .16s ease, stroke .16s ease; }
-.cmp-b:hover .cmp-shape, .cmp-b:focus-visible .cmp-shape { fill: rgba(245,158,11,.25); stroke: rgba(251,191,36,.95); }
+.cmp-b .cmp-shape { fill: rgba(56,189,248,.10); stroke: rgba(56,189,248,.70); stroke-width: 1.1; transition: fill .16s ease, stroke .16s ease; }
+.cmp-b:hover .cmp-shape, .cmp-b:focus-visible .cmp-shape { fill: rgba(125,211,252,.25); stroke: rgba(125,211,252,.95); }
 .cmp-b.cmp-locked { cursor: default; }
-.cmp-b.cmp-locked .cmp-shape { fill: rgba(41,37,36,.30); stroke: rgba(87,83,80,.40); stroke-width: 1; transition: none; }
-.cmp-b.cmp-locked:hover .cmp-shape { fill: rgba(41,37,36,.30); }
+.cmp-b.cmp-locked .cmp-shape { fill: rgba(28,25,23,.30); stroke: rgba(68,64,60,.40); stroke-width: 1; transition: none; }
+.cmp-b.cmp-locked:hover .cmp-shape { fill: rgba(28,25,23,.30); }
 .cmp-b.cmp-locked:focus-visible .cmp-shape { stroke: rgba(168,162,158,.75); }
 .cmp-b.cmp-hi .cmp-shape { fill: rgba(74,222,128,.12); stroke: rgba(74,222,128,.90); }
 .cmp-b.cmp-hi:hover .cmp-shape { fill: rgba(74,222,128,.22); }
-.cmp-b.cmp-selected .cmp-shape { fill: rgba(251,191,36,.28); stroke: #fbbf24; stroke-width: 1.6; }
+.cmp-b.cmp-selected .cmp-shape { fill: rgba(125,211,252,.28); stroke: #7dd3fc; stroke-width: 1.6; }
 .cmp-pulse { transform-box: fill-box; transform-origin: center; animation: cmpPulse 1.7s cubic-bezier(.2,.6,.35,1) infinite; will-change: transform, opacity; }
 .cmp-pulse-2 { animation-delay: .85s; }
 @keyframes cmpPulse {
   0% { transform: scale(.5); opacity: .95; }
   75% { opacity: .18; }
   100% { transform: scale(1.32); opacity: 0; }
+}
+.cmp-beacon-pulse { transform-box: fill-box; transform-origin: center; animation: cmpBeaconPulse 2.3s cubic-bezier(.2,.6,.35,1) infinite; will-change: transform, opacity; }
+@keyframes cmpBeaconPulse {
+  0% { transform: scale(.55); opacity: .9; }
+  70% { opacity: .15; }
+  100% { transform: scale(1.55); opacity: 0; }
 }
 .cmp-world { will-change: transform; }
 `;
@@ -102,21 +110,21 @@ function clampTf(t: Transform): Transform {
 const TerrainLayer = memo(function TerrainLayer() {
   return (
     <g pointerEvents="none" aria-hidden="true">
-      {/* الأرض */}
-      <path d={CAMPUS_PATHS.land} fill="#0d0d10" stroke="#17171d" strokeWidth={0.6} />
+      {/* الأرض — كحلي عميق */}
+      <path d={CAMPUS_PATHS.land} fill="#0a1425" stroke="#1d3157" strokeWidth={0.6} />
       {/* المياه — teal داكن جداً (لا أزرق) */}
       <path d={CAMPUS_PATHS.water} fill="#0f2a2a" stroke="#16443d" strokeWidth={0.5} strokeOpacity={0.5} />
-      {/* شبكة الرؤية التكتيكية — كل 100 وحدة بشفافية 4٪ */}
-      <path d={GRID_D} fill="none" stroke="#fbbf24" strokeOpacity={0.04} strokeWidth={1} />
-      {/* الطرق — هرمية كهرمانية */}
-      <path d={CAMPUS_PATHS.roadMajor} fill="none" stroke="rgba(245,158,11,0.50)" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
-      <path d={CAMPUS_PATHS.roadMinorHigh} fill="none" stroke="rgba(245,158,11,0.35)" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
-      <path d={CAMPUS_PATHS.roadMinorMid} fill="none" stroke="rgba(245,158,11,0.25)" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" />
-      <path d={CAMPUS_PATHS.roadMinorLow} fill="none" stroke="rgba(245,158,11,0.15)" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" />
-      {/* ممرات المشي — متقطعة */}
-      <path d={CAMPUS_PATHS.roadPath} fill="none" stroke="rgba(168,162,158,0.20)" strokeWidth={0.8} strokeDasharray="4 3" />
+      {/* شبكة المخطط الهندسي — كل 100 وحدة بشفافية 4٪ */}
+      <path d={GRID_D} fill="none" stroke="#0ea5e9" strokeOpacity={0.04} strokeWidth={1} />
+      {/* الطرق — هرمية سماوية جليدية */}
+      <path d={CAMPUS_PATHS.roadMajor} fill="none" stroke="rgba(125,211,252,0.50)" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+      <path d={CAMPUS_PATHS.roadMinorHigh} fill="none" stroke="rgba(125,211,252,0.35)" strokeWidth={2.2} strokeLinecap="round" strokeLinejoin="round" />
+      <path d={CAMPUS_PATHS.roadMinorMid} fill="none" stroke="rgba(125,211,252,0.25)" strokeWidth={1.4} strokeLinecap="round" strokeLinejoin="round" />
+      <path d={CAMPUS_PATHS.roadMinorLow} fill="none" stroke="rgba(125,211,252,0.15)" strokeWidth={1} strokeLinecap="round" strokeLinejoin="round" />
+      {/* ممرات المشي — متقطعة جليدية */}
+      <path d={CAMPUS_PATHS.roadPath} fill="none" stroke="rgba(125,211,252,0.18)" strokeWidth={0.8} strokeDasharray="4 3" />
       {/* بصمات المباني الأصلية (OSM) — طبقة خافتة جداً */}
-      <path d={CAMPUS_PATHS.buildings} fill="rgba(69,26,3,0.40)" stroke="rgba(245,158,11,0.15)" strokeWidth={0.6} />
+      <path d={CAMPUS_PATHS.buildings} fill="rgba(8,47,73,0.40)" stroke="rgba(56,189,248,0.15)" strokeWidth={0.6} />
     </g>
   );
 });
@@ -127,13 +135,15 @@ interface BuildingNodeProps {
   locked: boolean;
   hi: boolean;
   sel: boolean;
+  /** عليه منارة ميدانية (beaconCodes) — تُلحق التلميحة بالعنوان والتسمية */
+  bcn: boolean;
   k: number;
   /** مقياس الواجهة: بكسل شاشة ← وحدة خريطة (pxPerUnit × k) — للأحجام الثابتة ظاهرياً */
   ui: number;
   onSelect: (code: string) => void;
 }
 
-function BuildingNode({ b, locked, hi, sel, k, ui, onSelect }: BuildingNodeProps) {
+function BuildingNode({ b, locked, hi, sel, bcn, k, ui, onSelect }: BuildingNodeProps) {
   /** px شاشة ← وحدات خريطة (يتضمن القسمة على scale) */
   const s = (px: number): number => (ui > 0.0001 ? px / ui : px);
   const cx = b.x + b.w / 2;
@@ -164,7 +174,7 @@ function BuildingNode({ b, locked, hi, sel, k, ui, onSelect }: BuildingNodeProps
       data-bld={b.code}
       role="button"
       tabIndex={0}
-      aria-label={`${title}${locked ? " — منطقة غير ممسوحة" : ""}. اضغط لعرض التفاصيل.`}
+      aria-label={`${title}${locked ? " — منطقة غير ممسوحة" : ""}${bcn ? " — منارة ميدانية" : ""}. اضغط لعرض التفاصيل.`}
       onClick={() => onSelect(b.code)}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
@@ -173,7 +183,7 @@ function BuildingNode({ b, locked, hi, sel, k, ui, onSelect }: BuildingNodeProps
         }
       }}
     >
-      <title>{`${title}${locked ? " (غير ممسوح)" : ""}`}</title>
+      <title>{`${title}${locked ? " (غير ممسوح)" : ""}${bcn ? " — منارة ميدانية — امسحها في الميدان" : ""}`}</title>
 
       <g opacity={locked ? 0.35 : 1}>
         <rect className="cmp-shape" x={b.x} y={b.y} width={b.w} height={b.h} rx={rx} />
@@ -198,8 +208,8 @@ function BuildingNode({ b, locked, hi, sel, k, ui, onSelect }: BuildingNodeProps
 
       {sel && (
         <>
-          <circle className="cmp-pulse" cx={cx} cy={cy} r={ringR} fill="none" stroke="#fbbf24" strokeWidth={s(2)} pointerEvents="none" />
-          <circle className="cmp-pulse cmp-pulse-2" cx={cx} cy={cy} r={ringR} fill="none" stroke="#f59e0b" strokeWidth={s(1.5)} pointerEvents="none" />
+          <circle className="cmp-pulse" cx={cx} cy={cy} r={ringR} fill="none" stroke="#7dd3fc" strokeWidth={s(2)} pointerEvents="none" />
+          <circle className="cmp-pulse cmp-pulse-2" cx={cx} cy={cy} r={ringR} fill="none" stroke="#38bdf8" strokeWidth={s(1.5)} pointerEvents="none" />
         </>
       )}
 
@@ -208,7 +218,7 @@ function BuildingNode({ b, locked, hi, sel, k, ui, onSelect }: BuildingNodeProps
             <g transform={`translate(${cx - s(5)} ${b.y - s(12)}) scale(${s(10) / 24})`} pointerEvents="none">
               <path
                 d="M12 1.5A4.5 4.5 0 0 0 7.5 6v3H6.6A1.6 1.6 0 0 0 5 10.6v8.8A1.6 1.6 0 0 0 6.6 21h10.8A1.6 1.6 0 0 0 19 19.4v-8.8A1.6 1.6 0 0 0 17.4 9h-.9V6A4.5 4.5 0 0 0 12 1.5Zm-3 7.5V6a3 3 0 0 1 6 0v3H9Z"
-                fill="#a8a29e"
+                fill="#38bdf8"
                 opacity={0.95}
               />
             </g>
@@ -221,8 +231,8 @@ function BuildingNode({ b, locked, hi, sel, k, ui, onSelect }: BuildingNodeProps
                 width={bgW}
                 height={bgH}
                 rx={s(3)}
-                fill="rgba(5,5,7,0.72)"
-                stroke="rgba(245,158,11,0.18)"
+                fill="rgba(4,7,13,0.72)"
+                stroke="rgba(56,189,248,0.18)"
                 strokeWidth={s(0.7)}
               />
               <text
@@ -230,7 +240,7 @@ function BuildingNode({ b, locked, hi, sel, k, ui, onSelect }: BuildingNodeProps
                 y={cy - s(2.5)}
                 textAnchor="middle"
                 fontSize={fsName}
-                fill="#e7e5e4"
+                fill="#eff6ff"
                 style={{ direction: "rtl" }}
               >
                 {b.name}
@@ -240,7 +250,7 @@ function BuildingNode({ b, locked, hi, sel, k, ui, onSelect }: BuildingNodeProps
                 y={cy + s(10)}
                 textAnchor="middle"
                 fontSize={fsCode}
-                fill="#fbbf24"
+                fill="#7dd3fc"
                 style={{ fontFamily: "var(--font-mono, monospace)", letterSpacing: `${s(0.6)}px` }}
               >
                 {b.code}
@@ -257,11 +267,12 @@ interface BuildingsLayerProps {
   ui: number;
   unlocked: Set<string>;
   highlights: Set<string>;
+  beacons: Set<string>;
   selected: string | null;
   onSelect: (code: string) => void;
 }
 
-const BuildingsLayer = memo(function BuildingsLayer({ k, ui, unlocked, highlights, selected, onSelect }: BuildingsLayerProps) {
+const BuildingsLayer = memo(function BuildingsLayer({ k, ui, unlocked, highlights, beacons, selected, onSelect }: BuildingsLayerProps) {
   return (
     <g>
       {BUILDINGS.map((b) => (
@@ -271,6 +282,7 @@ const BuildingsLayer = memo(function BuildingsLayer({ k, ui, unlocked, highlight
           locked={!unlocked.has(b.area)}
           hi={highlights.has(b.code)}
           sel={selected === b.code}
+          bcn={beacons.has(b.code)}
           k={k}
           ui={ui}
           onSelect={onSelect}
@@ -280,9 +292,61 @@ const BuildingsLayer = memo(function BuildingsLayer({ k, ui, unlocked, highlight
   );
 });
 
+// ── طبقة المنارات — معيّنات سماوية نابضة فوق مراكز المباني المنارة ──
+// زخرفة بحتة: pointer-events: none على كل عناصرها — لا تُعطّل النقر ولا السحب.
+interface BeaconLayerProps {
+  k: number;
+  ui: number;
+  beacons: Set<string>;
+}
+
+const BeaconLayer = memo(function BeaconLayer({ k, ui, beacons }: BeaconLayerProps) {
+  const s = (px: number): number => (ui > 0.0001 ? px / ui : px);
+  if (beacons.size === 0) return null;
+  return (
+    <g pointerEvents="none" aria-hidden="true">
+      {BUILDINGS.filter((b) => beacons.has(b.code)).map((b) => {
+        const cx = b.x + b.w / 2;
+        const cy = b.y + b.h / 2;
+        // المعيّن: ~10px ظاهرية (مقسومة على المقياس مثل التسميات)
+        const half = s(5);
+        // حلقة النبض حول المعيّن بحجم ظاهري ثابت؛ وعند التصغير دون ×١ لها أرضية
+        // بنصف أكبر بُعد للمبنى (بتنعيم clamp(1-k)) كي تبقى المنارة مميّزة في العرض البعيد
+        const ringR = Math.max(half + s(10), (Math.max(b.w, b.h) / 2) * clamp(1 - k, 0, 1));
+        return (
+          <g key={b.code}>
+            <circle
+              className="cmp-beacon-pulse"
+              cx={cx}
+              cy={cy}
+              r={ringR}
+              fill="none"
+              stroke="rgba(103,232,249,0.75)"
+              strokeWidth={s(1.6)}
+              pointerEvents="none"
+            />
+            <rect
+              x={cx - half}
+              y={cy - half}
+              width={half * 2}
+              height={half * 2}
+              transform={`rotate(45 ${cx} ${cy})`}
+              fill="rgba(103,232,249,0.40)"
+              stroke="rgba(165,243,252,0.90)"
+              strokeWidth={s(1.1)}
+              style={{ filter: `drop-shadow(0 0 ${s(5)}px rgba(103,232,249,0.55))` }}
+              pointerEvents="none"
+            />
+          </g>
+        );
+      })}
+    </g>
+  );
+});
+
 // ── أنماط أزرار التحكم (44px لمس على الصغير) ────────────────────────
 const CTRL_BTN =
-  "flex h-11 w-11 items-center justify-center rounded-md border border-amber-500/30 bg-[#0a0a0d]/85 text-amber-400 backdrop-blur transition-all hover:border-amber-400/60 hover:bg-amber-500/15 active:scale-95 focus-visible:outline focus-visible:outline-amber-400 sm:h-9 sm:w-9";
+  "flex h-11 w-11 items-center justify-center rounded-md border border-sky-500/30 bg-[#04070d]/85 text-sky-300 backdrop-blur transition-all hover:border-sky-300/60 hover:bg-sky-500/15 active:scale-95 focus-visible:outline focus-visible:outline-sky-300 sm:h-9 sm:w-9";
 
 // ═════════════════════════════════════════════════════════════════════
 // المكوّن الرئيسي
@@ -290,6 +354,7 @@ const CTRL_BTN =
 function CampusMap({
   unlockedAreas,
   highlightCodes,
+  beaconCodes,
   onSelectBuilding,
   height = "70vh",
   className,
@@ -317,6 +382,7 @@ function CampusMap({
 
   const unlockedSet = useMemo(() => new Set(unlockedAreas), [unlockedAreas]);
   const highlightsSet = useMemo(() => new Set(highlightCodes ?? EMPTY_CODES), [highlightCodes]);
+  const beaconsSet = useMemo(() => new Set(beaconCodes ?? EMPTY_CODES), [beaconCodes]);
 
   const selB = useMemo(() => (selected ? buildingByCode(selected) ?? null : null), [selected]);
   const selUnlocked = selB ? unlockedSet.has(selB.area) : false;
@@ -543,7 +609,7 @@ function CampusMap({
     <div
       ref={containerRef}
       dir="rtl"
-      className={`relative w-full select-none overflow-hidden overscroll-contain bg-[#050507] ${className ?? ""}`}
+      className={`relative w-full select-none overflow-hidden overscroll-contain bg-[#04070d] ${className ?? ""}`}
       style={{ height }}
     >
       <svg
@@ -564,8 +630,8 @@ function CampusMap({
         <defs>
           {/* إضاءة دائرية خفيفة حول مركز العرض + تعتيم الأطراف */}
           <radialGradient id={gid} cx="50%" cy="42%" r="72%">
-            <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.07" />
-            <stop offset="42%" stopColor="#f59e0b" stopOpacity="0.025" />
+            <stop offset="0%" stopColor="#7dd3fc" stopOpacity="0.07" />
+            <stop offset="42%" stopColor="#38bdf8" stopOpacity="0.025" />
             <stop offset="100%" stopColor="#000000" stopOpacity="0.55" />
           </radialGradient>
         </defs>
@@ -583,9 +649,11 @@ function CampusMap({
             ui={ui}
             unlocked={unlockedSet}
             highlights={highlightsSet}
+            beacons={beaconsSet}
             selected={selected}
             onSelect={selectBuilding}
           />
+          <BeaconLayer k={tf.k} ui={ui} beacons={beaconsSet} />
         </g>
 
         <rect x={0} y={0} width={W} height={H} fill={`url(#${gid})`} pointerEvents="none" />
@@ -593,21 +661,21 @@ function CampusMap({
 
       {/* أقواس زاوية تكتيكية */}
       <div className="pointer-events-none absolute inset-0 z-30" aria-hidden="true">
-        <div className="absolute left-1 top-1 h-2.5 w-2.5 border-l border-t border-amber-500/30" />
-        <div className="absolute right-1 top-1 h-2.5 w-2.5 border-r border-t border-amber-500/30" />
-        <div className="absolute bottom-1 left-1 h-2.5 w-2.5 border-b border-l border-amber-500/30" />
-        <div className="absolute bottom-1 right-1 h-2.5 w-2.5 border-b border-r border-amber-500/30" />
+        <div className="absolute left-1 top-1 h-2.5 w-2.5 border-l border-t border-sky-500/30" />
+        <div className="absolute right-1 top-1 h-2.5 w-2.5 border-r border-t border-sky-500/30" />
+        <div className="absolute bottom-1 left-1 h-2.5 w-2.5 border-b border-l border-sky-500/30" />
+        <div className="absolute bottom-1 right-1 h-2.5 w-2.5 border-b border-r border-sky-500/30" />
       </div>
 
       {/* البوصلة */}
-      <div className="absolute left-2.5 top-2.5 z-10 flex flex-col items-center rounded-md border border-amber-500/20 bg-[#0a0a0d]/80 px-2 py-1.5 backdrop-blur">
+      <div className="absolute left-2.5 top-2.5 z-10 flex flex-col items-center rounded-md border border-sky-500/20 bg-[#04070d]/80 px-2 py-1.5 backdrop-blur">
         <svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="10" fill="none" stroke="rgba(245,158,11,0.35)" strokeWidth="1" />
-          <path d="M12 3.2 15 12H9Z" fill="#fbbf24" />
-          <path d="M12 20.8 15 12H9Z" fill="#57534e" />
-          <circle cx="12" cy="12" r="1.1" fill="#f59e0b" />
+          <circle cx="12" cy="12" r="10" fill="none" stroke="rgba(56,189,248,0.35)" strokeWidth="1" />
+          <path d="M12 3.2 15 12H9Z" fill="#7dd3fc" />
+          <path d="M12 20.8 15 12H9Z" fill="#075985" />
+          <circle cx="12" cy="12" r="1.1" fill="#38bdf8" />
         </svg>
-        <span className="mt-0.5 text-[9px] leading-none tracking-wide text-amber-400/80">شمال</span>
+        <span className="mt-0.5 text-[9px] leading-none tracking-wide text-sky-300/80">شمال</span>
       </div>
 
       {/* لوحة الرموز القابلة للطي */}
@@ -618,7 +686,7 @@ function CampusMap({
           aria-expanded={legendOpen}
           aria-controls={legendId}
           aria-label="تبديل لوحة الرموز"
-          className="flex items-center gap-1.5 rounded-md border border-amber-500/25 bg-[#0a0a0d]/85 px-2.5 py-1.5 text-[11px] font-medium text-amber-400/90 backdrop-blur transition-colors hover:border-amber-400/50 hover:text-amber-300 focus-visible:outline focus-visible:outline-amber-400"
+          className="flex items-center gap-1.5 rounded-md border border-sky-500/25 bg-[#04070d]/85 px-2.5 py-1.5 text-[11px] font-medium text-sky-300/90 backdrop-blur transition-colors hover:border-sky-300/50 hover:text-sky-200 focus-visible:outline focus-visible:outline-sky-300"
         >
           <svg
             width="10"
@@ -634,24 +702,24 @@ function CampusMap({
         {legendOpen && (
           <div
             id={legendId}
-            className="mt-1.5 w-44 space-y-2 rounded-md border border-amber-500/20 bg-[#0a0a0d]/90 p-2.5 backdrop-blur"
+            className="mt-1.5 w-44 space-y-2 rounded-md border border-sky-500/20 bg-[#04070d]/90 p-2.5 backdrop-blur"
           >
-            <div className="flex items-center gap-2 text-[11px] text-stone-300">
-              <span className="h-3.5 w-6 shrink-0 rounded-[3px] border border-amber-500/70 bg-amber-500/10" />
+            <div className="flex items-center gap-2 text-[11px] text-sky-100">
+              <span className="h-3.5 w-6 shrink-0 rounded-[3px] border border-sky-400/70 bg-sky-400/10" />
               مبنى مضاء
             </div>
-            <div className="flex items-center gap-2 text-[11px] text-stone-300">
-              <span className="h-3.5 w-6 shrink-0 rounded-[3px] border border-stone-600/40 bg-stone-800/30 opacity-60" />
+            <div className="flex items-center gap-2 text-[11px] text-sky-100">
+              <span className="h-3.5 w-6 shrink-0 rounded-[3px] border border-stone-700/40 bg-stone-900/30 opacity-60" />
               مبنى غير ممسوح
             </div>
-            <div className="flex items-center gap-2 text-[11px] text-stone-300">
+            <div className="flex items-center gap-2 text-[11px] text-sky-100">
               <span className="relative flex h-3.5 w-6 shrink-0 items-center justify-center">
-                <span className="h-2.5 w-4 rounded-[2px] border border-amber-400 bg-amber-400/25" />
-                <span className="absolute inset-0 rounded-full border border-dashed border-amber-400/70" />
+                <span className="h-2.5 w-4 rounded-[2px] border border-sky-300 bg-sky-300/25" />
+                <span className="absolute inset-0 rounded-full border border-dashed border-sky-300/70" />
               </span>
               مبنى محدد
             </div>
-            <div className="flex items-center gap-2 text-[11px] text-stone-300">
+            <div className="flex items-center gap-2 text-[11px] text-sky-100">
               <span className="h-3.5 w-6 shrink-0 rounded-[3px] border border-emerald-400 bg-emerald-400/15 shadow-[0_0_8px_rgba(74,222,128,0.45)]" />
               منطقة مهمة
             </div>
@@ -660,10 +728,10 @@ function CampusMap({
       </div>
 
       {/* مقياس الرسم */}
-      <div className="absolute bottom-2.5 left-2.5 z-10 rounded-md border border-amber-500/15 bg-[#0a0a0d]/80 px-2 py-1.5 backdrop-blur">
+      <div className="absolute bottom-2.5 left-2.5 z-10 rounded-md border border-sky-500/15 bg-[#04070d]/80 px-2 py-1.5 backdrop-blur">
         <div className="flex items-center gap-1.5" dir="rtl">
-          <div className="h-1.5 border-x border-b border-amber-400/80" style={{ width: `${barPx}px` }} />
-          <span className="whitespace-nowrap text-[10px] leading-none text-stone-400">
+          <div className="h-1.5 border-x border-b border-sky-300/80" style={{ width: `${barPx}px` }} />
+          <span className="whitespace-nowrap text-[10px] leading-none text-sky-200">
             ≈ {arDigits(barM)} متر
           </span>
         </div>
@@ -673,7 +741,7 @@ function CampusMap({
       <div className="absolute bottom-2.5 right-2.5 z-10 flex flex-col items-center gap-1.5">
         <span
           dir="ltr"
-          className="rounded bg-[#0a0a0d]/85 px-1.5 py-0.5 font-mono text-[9px] leading-none text-amber-400/70 backdrop-blur"
+          className="rounded bg-[#04070d]/85 px-1.5 py-0.5 font-mono text-[9px] leading-none text-sky-300/70 backdrop-blur"
         >
           ×{tf.k.toFixed(1)}
         </span>
@@ -698,17 +766,17 @@ function CampusMap({
       {/* شريط المعلومات السفلي العائم */}
       {selB && (
         <div className="absolute inset-x-2 bottom-16 z-20 animate-in fade-in slide-in-from-bottom-2 duration-300 sm:inset-x-auto sm:bottom-3 sm:left-1/2 sm:w-[440px] sm:-translate-x-1/2">
-          <div className="flex items-start gap-3 rounded-lg border border-amber-500/30 bg-[#0a0a0d]/95 p-3 shadow-[0_8px_30px_rgba(0,0,0,0.6)] backdrop-blur">
+          <div className="flex items-start gap-3 rounded-lg border border-sky-500/30 bg-[#04070d]/95 p-3 shadow-[0_8px_30px_rgba(0,0,0,0.6)] backdrop-blur">
             <div
               dir="ltr"
-              className="shrink-0 font-mono text-2xl font-bold leading-none text-amber-400 [text-shadow:0_0_12px_rgba(251,191,36,0.35)]"
+              className="shrink-0 font-mono text-2xl font-bold leading-none text-sky-300 [text-shadow:0_0_12px_rgba(125,211,252,0.35)]"
             >
               {selB.code}
             </div>
             <div className="min-w-0 flex-1">
-              <div className="truncate text-sm font-bold text-stone-200">{selB.name}</div>
-              <div className="mt-0.5 text-[11px] leading-snug text-stone-400">
-                <span className="text-amber-500/80">{selArea?.name ?? selB.area}</span>
+              <div className="truncate text-sm font-bold text-blue-50">{selB.name}</div>
+              <div className="mt-0.5 text-[11px] leading-snug text-sky-200">
+                <span className="text-sky-400/80">{selArea?.name ?? selB.area}</span>
                 {selArea ? ` — ${selArea.desc}` : ""}
               </div>
             </div>
@@ -721,7 +789,7 @@ function CampusMap({
               type="button"
               onClick={() => setSelected(null)}
               aria-label="إغلاق لوحة معلومات المبنى"
-              className="shrink-0 rounded p-1 text-stone-500 transition-colors hover:bg-amber-500/10 hover:text-amber-400 focus-visible:outline focus-visible:outline-amber-400"
+              className="shrink-0 rounded p-1 text-sky-300/60 transition-colors hover:bg-sky-500/10 hover:text-sky-300 focus-visible:outline focus-visible:outline-sky-300"
             >
               <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
                 <path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />

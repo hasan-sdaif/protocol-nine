@@ -120,7 +120,7 @@ export default function BoardView({ game }: { game: Game }) {
                       <td className="px-2 py-2 text-center font-mono text-muted-foreground" dir="ltr">{a.solved}</td>
                       <td className="px-2 py-2 text-center">
                         {a.streak > 0 ? (
-                          <span className="font-mono text-orange-400" dir="ltr">{a.streak}🔥</span>
+                          <span className="font-mono text-chart-4" dir="ltr">{a.streak}🔥</span>
                         ) : (
                           <span className="text-muted-foreground/40">—</span>
                         )}

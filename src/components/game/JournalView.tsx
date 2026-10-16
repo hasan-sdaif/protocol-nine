@@ -18,7 +18,7 @@ const KIND_META: Record<string, { icon: typeof Star; cls: string; label: string 
   rank: { icon: Star, cls: "text-primary", label: "ترقية" },
   finish: { icon: Trophy, cls: "text-primary", label: "الخاتمة" },
   feel: { icon: FileText, cls: "text-foreground/70", label: "إجابة" },
-  pulse: { icon: Radio, cls: "text-orange-400", label: "نبض" },
+  pulse: { icon: Radio, cls: "text-chart-4", label: "نبض" },
   sort: { icon: Filter, cls: "text-yellow-500", label: "فرز" },
   team: { icon: Users, cls: "text-primary", label: "حلف" },
   secede: { icon: Users, cls: "text-red-400", label: "انفصال" },
@@ -111,7 +111,7 @@ export default function JournalView({ game }: { game: Game }) {
         <div className="max-h-96 overflow-y-auto scroll-thin p-3">
           {journal.length === 0 ? (
             <p className="py-8 text-center text-sm text-muted-foreground">
-              <Flame className="mx-auto mb-2 h-5 w-5 text-orange-400/60" />
+              <Flame className="mx-auto mb-2 h-5 w-5 text-chart-4/60" />
               السجل فارغ... بعد لغزك الأول يبدأ الحبر بالجريان.
             </p>
           ) : (

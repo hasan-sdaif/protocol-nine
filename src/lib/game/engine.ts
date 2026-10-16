@@ -18,6 +18,7 @@ import {
   allPuzzleById,
 } from "./content-aa";
 import { EXTERNAL_BRANCHES, SORTING_DOCS, PULSE_POOL } from "./content-external";
+import { PATHS, SCAN_POINTS, allPathPuzzleById, scanPointByCode } from "./content-paths";
 import {
   caesar,
   atbash,
@@ -39,6 +40,8 @@ export interface ClientPuzzle {
   wrongAttempts: number;
   hintsOpened: number;
   hints: (string | null)[];
+  locked?: boolean; // لألغاز المسارات: يُفتح بترتيب المسار
+  building?: string; // لألغاز المسارات: موقع اللغز في الحرم
 }
 
 export interface ClientProtocol {
@@ -143,6 +146,35 @@ export interface ClientExternalBranch {
   completed: boolean;
 }
 
+export interface ClientPath {
+  key: string;
+  name: string;
+  sigil: string;
+  tagline: string;
+  story: string;
+  audio: string;
+  unlockMinProtocol: number;
+  unlocked: boolean;
+  completed: boolean;
+  fragments: (string | null)[];
+  puzzles: ClientPuzzle[];
+  seal: { word: string; label: string } | null;
+}
+
+export interface ClientScanPoint {
+  id: string;
+  code: string;
+  building: string;
+  title: string;
+  story: string | null; // يُكشف بعد المسح
+  points: number;
+  minProtocol: number;
+  locked: boolean;
+  audio: string;
+  found: boolean;
+  test: { question: string; bonusPoints: number; solved: boolean } | null;
+}
+
 export interface GameState {
   agent: {
     codename: string;
@@ -170,6 +202,10 @@ export interface GameState {
     totalPuzzles: number;
     externalSolved: number;
     externalTotal: number;
+    pathSolved: number;
+    pathTotal: number;
+    scansFound: number;
+    scansTotal: number;
   };
   team: ClientTeam | null;
   canJoinTeam: boolean;
@@ -185,6 +221,13 @@ export interface GameState {
     unlocked: boolean;
     minProtocol: number;
     branches: ClientExternalBranch[];
+  };
+  paths: ClientPath[];
+  scans: {
+    points: ClientScanPoint[];
+    foundCount: number;
+    total: number;
+    bonusPoints: number;
   };
 }
 
@@ -271,7 +314,7 @@ export function pulseForDate(dateStr: string): PulseInstance {
 
 // ── بناء الحالة الكاملة ───────────────────────────────────
 export async function buildGameState(agent: Agent): Promise<GameState> {
-  const [solves, hintRows, journalRows, pulseRows, sortRows, pulseHistory] = await Promise.all([
+  const [solves, hintRows, journalRows, pulseRows, sortRows, scanRows, pulseHistory] = await Promise.all([
     db.solve.findMany({ where: { agentId: agent.id } }),
     db.hintUnlock.findMany({ where: { agentId: agent.id } }),
     db.journal.findMany({
@@ -281,6 +324,7 @@ export async function buildGameState(agent: Agent): Promise<GameState> {
     }),
     db.dailyPulse.findMany({ where: { agentId: agent.id } }),
     db.sortAttempt.findMany({ where: { agentId: agent.id } }),
+    db.scanLog.findMany({ where: { agentId: agent.id } }),
     db.dailyPulse.findMany({
       where: { agentId: agent.id },
       orderBy: { dateStr: "desc" },
@@ -491,6 +535,73 @@ export async function buildGameState(agent: Agent): Promise<GameState> {
   const extSolved = solves.filter((s) => s.puzzleId.startsWith("ext-")).length;
   const extTotal = EXTERNAL_BRANCHES.reduce((a, b) => a + b.puzzles.length, 0);
 
+  // ── المسارات الميدانية ──
+  const paths: ClientPath[] = PATHS.map((path) => {
+    const pathUnlocked = highestCompleted >= path.unlockMinProtocol;
+    const pathSolvedCount = path.puzzles.filter((p) => solvedIds.has(p.id)).length;
+    return {
+      key: path.key,
+      name: path.name,
+      sigil: path.sigil,
+      tagline: path.tagline,
+      story: path.story,
+      audio: path.audio,
+      unlockMinProtocol: path.unlockMinProtocol,
+      unlocked: pathUnlocked,
+      completed: pathSolvedCount === path.puzzles.length,
+      fragments: path.fragments.map((f, i) => (i < pathSolvedCount ? f : null)),
+      puzzles: path.puzzles.map((pz, idx) => {
+        const solve = solves.find((s) => s.puzzleId === pz.id);
+        const opened = hintRows
+          .filter((h) => h.puzzleId === pz.id)
+          .map((h) => h.level)
+          .sort((a, b) => a - b);
+        return {
+          id: pz.id,
+          title: pz.title,
+          question: pz.question,
+          material: pz.material,
+          materialKind: pz.materialKind,
+          points: pz.points,
+          solved: !!solve,
+          wrongAttempts: solve?.attempts ?? 0,
+          hintsOpened: opened.length,
+          hints: [0, 1, 2].map((i) => (i < opened.length ? pz.hints[i] ?? null : null)),
+          building: pz.building,
+          locked:
+            !pathUnlocked || (idx > 0 && !solvedIds.has(path.puzzles[idx - 1].id)),
+        } satisfies ClientPuzzle;
+      }),
+      seal: pathSolvedCount === path.puzzles.length ? path.seal : null,
+    };
+  });
+
+  // ── منارات المسح الميداني (QR) ──
+  const scans = {
+    points: SCAN_POINTS.map((sp): ClientScanPoint => {
+      const log = scanRows.find((r) => r.code === sp.code);
+      const locked = sp.minProtocol > 0 && highestCompleted < sp.minProtocol - 1;
+      return {
+        id: sp.id,
+        code: sp.code,
+        building: sp.building,
+        title: locked ? "منارة صامتة" : sp.title,
+        story: log ? sp.story : null,
+        points: sp.points,
+        minProtocol: sp.minProtocol,
+        locked,
+        audio: sp.audio,
+        found: !!log,
+        test: sp.test
+          ? { question: sp.test.question, bonusPoints: sp.test.bonusPoints, solved: log?.testSolved ?? false }
+          : null,
+      };
+    }),
+    foundCount: scanRows.length,
+    total: SCAN_POINTS.length,
+    bonusPoints: scanRows.reduce((a, r) => a + r.testPoints, 0),
+  };
+
   return {
     agent: {
       codename: agent.codename,
@@ -532,6 +643,10 @@ export async function buildGameState(agent: Agent): Promise<GameState> {
       totalPuzzles: ALL_PROTOCOLS.reduce((a, p) => a + p.puzzles.length, 0),
       externalSolved: extSolved,
       externalTotal: extTotal,
+      pathSolved: solves.filter((s) => s.puzzleId.startsWith("path-")).length,
+      pathTotal: PATHS.reduce((a, p) => a + p.puzzles.length, 0),
+      scansFound: scanRows.length,
+      scansTotal: SCAN_POINTS.length,
     },
     team,
     canJoinTeam: !agent.teamId && !agent.secededAt,
@@ -547,6 +662,8 @@ export async function buildGameState(agent: Agent): Promise<GameState> {
       minProtocol: MECHANICS.plateMinProtocol,
     },
     external,
+    paths,
+    scans,
   };
 }
 
@@ -559,6 +676,7 @@ export interface SubmitResult {
   totalPoints: number;
   protocolCompleted?: boolean;
   externalCompleted?: { name: string; prize: string } | null;
+  pathCompleted?: { name: string; seal: string; label: string } | null;
   shard?: { word: string; label: string } | null;
   dossierUnlocked?: { title: string; body: string } | null;
   phrase?: string | null;
@@ -627,6 +745,33 @@ export async function submitAnswer(
     });
   }
 
+  // ── المسارات الميدانية ──
+  const pathFound = allPathPuzzleById(puzzleId);
+  if (pathFound) {
+    if (solvedIds.has(puzzleId)) {
+      return {
+        correct: true,
+        alreadySolved: true,
+        pointsAwarded: 0,
+        totalPoints: agent.points,
+        message: "هذا اللغز محلول من قبل.",
+      };
+    }
+    const { path, puzzle } = pathFound;
+    if (highestCompletedProtocol(solvedIds) < path.unlockMinProtocol) {
+      return { error: `«${path.name}» يُفتح بعد إتمام البروتوكول ${path.unlockMinProtocol}.` };
+    }
+    const idx = path.puzzles.findIndex((p) => p.id === puzzleId);
+    if (idx > 0 && !solvedIds.has(path.puzzles[idx - 1].id)) {
+      return { error: "أبواب المسار تتوالى — حل ما قبله أولاً." };
+    }
+    return applySolve(agent, puzzle, solvedIds, answer, {
+      kind: "path",
+      label: `${path.name} — ${puzzle.title}`,
+      path,
+    });
+  }
+
   // ── بروتوكولات الأصل والتسعة ──
   const found = allPuzzleById(puzzleId);
   if (!found) return { error: "لغز غير موجود." };
@@ -661,10 +806,11 @@ async function applySolve(
   solvedIds: Set<string>,
   answer: string,
   ctx: {
-    kind: "protocol" | "ext";
+    kind: "protocol" | "ext" | "path";
     label: string;
     protocol?: (typeof ALL_PROTOCOLS)[number];
     branch?: (typeof EXTERNAL_BRANCHES)[number];
+    path?: (typeof PATHS)[number];
     vaultAnswers?: string[];
   },
 ): Promise<SubmitResult | { error: string }> {
@@ -750,6 +896,23 @@ async function applySolve(
     }
   }
 
+  // اكتمال مسار ميداني؟
+  if (ctx.kind === "path" && ctx.path) {
+    const pathDone = ctx.path.puzzles.every((p) => solvedIds.has(p.id));
+    if (pathDone) {
+      result.pathCompleted = {
+        name: ctx.path.name,
+        seal: ctx.path.seal.word,
+        label: ctx.path.seal.label,
+      };
+      await journal(
+        agent.id,
+        "path",
+        `اكتمل مسار «${ctx.path.name}» — حصلت على الخِتم: ${ctx.path.seal.word}.`
+      );
+    }
+  }
+
   // اكتمال ملحق خارجي؟
   if (ctx.kind === "ext" && ctx.branch) {
     const branchDone = ctx.branch.puzzles.every((p) => solvedIds.has(p.id));
@@ -793,20 +956,30 @@ export async function buyHint(
 
   let puzzle: PuzzleDef | undefined;
   let protoN: number | null = null;
+  let pathUnlock: number | null = null;
   const inProtocol = allPuzzleById(puzzleId);
   if (inProtocol) {
     puzzle = inProtocol.puzzle;
     protoN = inProtocol.protocol.n;
   } else {
-    const ext = findExternalPuzzle(puzzleId);
-    if (ext) puzzle = ext.puzzle;
+    const pathHit = allPathPuzzleById(puzzleId);
+    if (pathHit) {
+      puzzle = pathHit.puzzle;
+      pathUnlock = hitPathUnlock(pathHit.path);
+    } else {
+      const ext = findExternalPuzzle(puzzleId);
+      if (ext) puzzle = ext.puzzle;
+    }
   }
   if (!puzzle) return { error: "لغز غير موجود." };
   if (solvedIds.has(puzzleId)) return { error: "اللغز محلول — لا حاجة للتلميح." };
   if (protoN !== null && !protocolUnlocked(protoN, solvedIds)) {
     return { error: "البروتوكول مغلق." };
   }
-  if (protoN === null && highestCompletedProtocol(solvedIds) < MECHANICS.externalMinProtocol) {
+  if (pathUnlock !== null && highestCompletedProtocol(solvedIds) < pathUnlock) {
+    return { error: "هذا المسار مغلق بعد." };
+  }
+  if (protoN === null && pathUnlock === null && highestCompletedProtocol(solvedIds) < MECHANICS.externalMinProtocol) {
     return { error: "الملاحق الخارجية مغلقة." };
   }
 
@@ -1028,6 +1201,138 @@ export async function buyPlate(
   return { ok: true, notes: PLATE_NOTES };
 }
 
+// ── منارات المسح الميداني (QR داخل الجامعة) ────────────────
+function hitPathUnlock(path: { unlockMinProtocol: number }): number {
+  return path.unlockMinProtocol;
+}
+
+export interface ScanResult {
+  ok: boolean;
+  alreadyFound?: boolean;
+  title: string;
+  story: string;
+  audio: string;
+  building: string;
+  pointsAwarded: number;
+  test: { question: string; bonusPoints: number; solved: boolean } | null;
+  message: string;
+}
+
+export async function scanBeacon(agent: Agent, code: string): Promise<ScanResult | { error: string }> {
+  const clean = code.trim().toUpperCase();
+  const sp = scanPointByCode(clean);
+  if (!sp) return { error: "رمز غير معروف للشبكة. تأكد من الرمز مرة أخرى." };
+
+  const solvedIds = new Set(
+    (await db.solve.findMany({ where: { agentId: agent.id } })).map((s) => s.puzzleId)
+  );
+  // minProtocol=0 → متاحة فور الانتساب؛ وإلا بعد إتمام (minProtocol−1)
+  if (sp.minProtocol > 0 && highestCompletedProtocol(solvedIds) < sp.minProtocol - 1) {
+    return { error: "هذه المنارة صامتة أمامك الآن — تقدّم أكثر في البروتوكولات." };
+  }
+
+  const existing = await db.scanLog.findUnique({
+    where: { agentId_code: { agentId: agent.id, code: sp.code } },
+  });
+  if (existing) {
+    return {
+      ok: true,
+      alreadyFound: true,
+      title: sp.title,
+      story: sp.story,
+      audio: sp.audio,
+      building: sp.building,
+      pointsAwarded: 0,
+      test: sp.test
+        ? { question: sp.test.question, bonusPoints: sp.test.bonusPoints, solved: existing.testSolved }
+        : null,
+      message: "منارة ممسوحة سابقاً — سجلها يعود إليك.",
+    };
+  }
+
+  await db.scanLog.create({
+    data: { agentId: agent.id, code: sp.code, points: sp.points },
+  });
+  await db.agent.update({
+    where: { id: agent.id },
+    data: { points: { increment: sp.points }, scansCount: { increment: 1 } },
+  });
+  await journal(
+    agent.id,
+    "scan",
+    `مسحت منارة ميدانية «${sp.title}» عند ${sp.building} (+${sp.points} نقطة).`
+  );
+
+  return {
+    ok: true,
+    title: sp.title,
+    story: sp.story,
+    audio: sp.audio,
+    building: sp.building,
+    pointsAwarded: sp.points,
+    test: sp.test
+      ? { question: sp.test.question, bonusPoints: sp.test.bonusPoints, solved: false }
+      : null,
+    message: `إشارة مؤكدة (+${sp.points} نقطة).`,
+  };
+}
+
+export async function answerScanTest(
+  agent: Agent,
+  code: string,
+  answer: string
+): Promise<
+  | { ok: boolean; correct: boolean; pointsAwarded: number; revealAnswer: string; message: string }
+  | { error: string }
+> {
+  const clean = code.trim().toUpperCase();
+  const sp = scanPointByCode(clean);
+  if (!sp || !sp.test) return { error: "لا اختبار على هذه المنارة." };
+  const log = await db.scanLog.findUnique({
+    where: { agentId_code: { agentId: agent.id, code: sp.code } },
+  });
+  if (!log) return { error: "امسح المنارة أولاً." };
+  if (log.testSolved) {
+    return {
+      ok: true,
+      correct: true,
+      pointsAwarded: 0,
+      revealAnswer: sp.test.revealAnswer,
+      message: "اجتزت هذا الاختبار سابقاً.",
+    };
+  }
+  if (!answersMatch(answer, sp.test.answers)) {
+    await journal(agent.id, "scan", `اختبار المنارة «${sp.title}»: إجابة مرفوضة. المنارة تسمح بإعادة المحاولة.`);
+    return {
+      ok: true,
+      correct: false,
+      pointsAwarded: 0,
+      revealAnswer: "",
+      message: "الإجابة مرفوضة. حاول مرة أخرى — المنارة صبورة.",
+    };
+  }
+  await db.scanLog.update({
+    where: { id: log.id },
+    data: { testSolved: true, testPoints: sp.test.bonusPoints },
+  });
+  await db.agent.update({
+    where: { id: agent.id },
+    data: { points: { increment: sp.test.bonusPoints } },
+  });
+  await journal(
+    agent.id,
+    "scan",
+    `اجتزت اختبار المنارة «${sp.title}» (+${sp.test.bonusPoints} نقطة).`
+  );
+  return {
+    ok: true,
+    correct: true,
+    pointsAwarded: sp.test.bonusPoints,
+    revealAnswer: sp.test.revealAnswer,
+    message: `المنارة اقتنعت بك (+${sp.test.bonusPoints} نقطة).`,
+  };
+}
+
 // ── الفرق ─────────────────────────────────────────────────
 function genInviteCode(): string {
   return String(Math.floor(100000 + Math.random() * 900000));
@@ -1145,7 +1450,7 @@ export async function postTeamMessage(
 
 // ── بث الوسيط: تدفق الأحداث الحية ─────────────────────────
 export async function getFeed(): Promise<{ at: string; kind: string; text: string }[]> {
-  const [recentSolves, recentFinishes, recentJoins, recentTeams] = await Promise.all([
+  const [recentSolves, recentFinishes, recentJoins, recentTeams, recentScans, recentPaths] = await Promise.all([
     db.solve.findMany({
       orderBy: { solvedAt: "desc" },
       take: 18,
@@ -1165,6 +1470,18 @@ export async function getFeed(): Promise<{ at: string; kind: string; text: strin
     }),
     db.journal.findMany({
       where: { kind: "team" },
+      orderBy: { createdAt: "desc" },
+      take: 3,
+      select: { text: true, createdAt: true },
+    }),
+    db.journal.findMany({
+      where: { kind: "scan", text: { contains: "مسحت منارة" } },
+      orderBy: { createdAt: "desc" },
+      take: 4,
+      select: { text: true, createdAt: true },
+    }),
+    db.journal.findMany({
+      where: { kind: "path", text: { contains: "اكتمل مسار" } },
       orderBy: { createdAt: "desc" },
       take: 3,
       select: { text: true, createdAt: true },
@@ -1197,6 +1514,12 @@ export async function getFeed(): Promise<{ at: string; kind: string; text: strin
   }
   for (const t of recentTeams) {
     events.push({ at: t.createdAt.toISOString(), kind: "team", text: t.text });
+  }
+  for (const s of recentScans) {
+    events.push({ at: s.createdAt.toISOString(), kind: "scan", text: s.text });
+  }
+  for (const p of recentPaths) {
+    events.push({ at: p.createdAt.toISOString(), kind: "path", text: p.text });
   }
 
   events.sort((a, b) => (a.at < b.at ? 1 : -1));

@@ -64,6 +64,13 @@ export default function MapPanel({
     return PUZZLE_HIGHLIGHTS[focusPuzzleId];
   }, [focusPuzzleId]);
 
+  // منارات ميدانية: المباني التي تحمل منارة متاحة لم تُمسح بعد تنبض على الخريطة
+  const beaconCodes = useMemo(() => {
+    if (!state) return undefined;
+    const active = state.scans.points.filter((p) => !p.locked && !p.found).map((p) => p.building);
+    return active.length > 0 ? Array.from(new Set(active)) : undefined;
+  }, [state]);
+
   if (!state) return null;
 
   const plateNote = state.agent.plateUnlocked
@@ -108,13 +115,14 @@ export default function MapPanel({
           <CampusMap
             unlockedAreas={unlockedAreas}
             highlightCodes={highlightCodes}
+            beaconCodes={beaconCodes}
             onSelectBuilding={() => undefined}
             height="70vh"
           />
         </div>
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-[0.65rem] text-muted-foreground">
           <span>
-            {unlockedAreas.length}/16 منطقة مضاءة — أكمل البروتوكولات لتنير البقية.
+            {unlockedAreas.length}/16 منطقة مضاءة — المنارات السماوية النابضة مواقع منارات QR لم تمسحها بعد (قسم الميدان).
           </span>
           <span>هندسة حقيقية مبنية على بيانات OpenStreetMap لحرم صخير.</span>
         </div>

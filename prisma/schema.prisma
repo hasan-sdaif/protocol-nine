@@ -38,6 +38,7 @@ model Agent {
   reportsCorrect Int      @default(0) // إبلاغات فرز صحيحة
   reportsWrong   Int      @default(0) // اتهامات خاطئة لوثائق حقيقية
   fooledCount    Int      @default(0) // مرات خدعه الورثة
+  scansCount     Int      @default(0) // منارات QR الممسوحة ميدانياً
 
   sessions Session[]
   solves   Solve[]
@@ -45,7 +46,23 @@ model Agent {
   journal  Journal[]
   pulses   DailyPulse[]
   sorts    SortAttempt[]
+  scans    ScanLog[]
   team     Team?          @relation(fields: [teamId], references: [id])
+}
+
+// ── منارات المسح الميداني (QR داخل الجامعة) ───────────────
+model ScanLog {
+  id         String   @id @default(cuid())
+  agentId    String
+  code       String // حمولة QR مثل "P9-QR-S17-1998"
+  points     Int      @default(0)
+  testSolved Boolean  @default(false) // اجتاز اختبار المنارة
+  testPoints Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  agent Agent @relation(fields: [agentId], references: [id], onDelete: Cascade)
+
+  @@unique([agentId, code])
 }
 
 // جلسة دائمة — لا تنتهي عملياً (١٠ سنوات)

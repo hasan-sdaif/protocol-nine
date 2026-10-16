@@ -8,7 +8,7 @@ import { Radio, Flame, Loader2, Send, Lock, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { PhonePlayer, sfx } from "./audio";
+import { PhonePlayer, sfx, useAutoTransmission } from "./audio";
 import { SectionHead, StatChip, GlitchOnce } from "./effects";
 import type { Game } from "./useGame";
 
@@ -18,6 +18,9 @@ export default function PulseView({ game }: { game: Game }) {
   const [busy, setBusy] = useState(false);
   const [feedback, setFeedback] = useState<{ ok: boolean; msg: string } | null>(null);
   const [glitch, setGlitch] = useState(0);
+
+  // إرسالية النبض تعمل تلقائياً عند دخول القسم
+  useAutoTransmission("/audio/mysterious-phone-pulse-daily.mp3", "إرسالية النبض اليومي");
 
   if (!state) return null;
   const pulse = state.pulse;
@@ -149,7 +152,7 @@ export default function PulseView({ game }: { game: Game }) {
 
       <div className="panel p-4">
         <p className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Flame className="h-4 w-4 text-orange-400" />
+          <Flame className="h-4 w-4 text-chart-4" />
           كل يوم متصل بالسلسلة يضيف +١٠ نقاط لمكافأة النبضة التالية (حتى +٥٠).
           يوم واحد فائت... والسلسلة تعود إلى الواحد.
         </p>

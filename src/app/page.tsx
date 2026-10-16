@@ -12,6 +12,8 @@ import IntroScreen from "@/components/game/IntroScreen";
 import AuthPanel from "@/components/game/AuthPanel";
 import GameShell, { type ViewKey } from "@/components/game/GameShell";
 import OpsView from "@/components/game/OpsView";
+import PathsView from "@/components/game/PathsView";
+import ScanView from "@/components/game/ScanView";
 import LabView from "@/components/game/LabView";
 import MapPanel from "@/components/game/MapPanel";
 import PulseView from "@/components/game/PulseView";
@@ -22,6 +24,7 @@ import TeamView from "@/components/game/TeamView";
 import JournalView from "@/components/game/JournalView";
 import FinaleView from "@/components/game/FinaleView";
 import { useGame } from "@/components/game/useGame";
+import { useAutoTransmission } from "@/components/game/audio";
 
 type Phase = "boot" | "intro" | "auth" | "app";
 
@@ -31,6 +34,10 @@ export default function Home() {
   const [view, setView] = useState<ViewKey>("ops");
   const [mapFocus, setMapFocus] = useState<string | null>(null);
   const [announcedFinale, setAnnouncedFinale] = useState(false);
+
+  // ترحيب الوكيل يعمل تلقائياً عند دخول المنظومة (مرة لكل جلسة)
+  const enteredApp = phase === "app";
+  useAutoTransmission(enteredApp ? "/audio/deep-phone-recruit-welcome.mp3" : null, "إرسالية ترحيب الوكيل");
 
   // استعادة الجلسة الدائمة: الوكيل المسجَّل يدخل مباشرة — لا إقلاع، لا طرد
   useEffect(() => {
@@ -136,6 +143,8 @@ export default function Home() {
         )}
 
         {view === "ops" && <OpsView game={game} onOpenMap={openMapForPuzzle} />}
+        {view === "paths" && <PathsView game={game} onOpenMap={openMapForPuzzle} />}
+        {view === "scan" && <ScanView game={game} />}
         {view === "lab" && <LabView />}
         {view === "map" && (
           <MapPanel game={game} focusPuzzleId={mapFocus} onClearFocus={() => setMapFocus(null)} />

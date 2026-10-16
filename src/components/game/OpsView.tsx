@@ -6,7 +6,7 @@
 import { useMemo, useState } from "react";
 import { Lock, CheckCircle2, ChevronDown, Building2, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { PhonePlayer, sfx } from "./audio";
+import { PhonePlayer, sfx, useAutoTransmission } from "./audio";
 import { SectionHead, StatChip } from "./effects";
 import PuzzlePanel from "./PuzzlePanel";
 import type { Game } from "./useGame";
@@ -30,6 +30,10 @@ export default function OpsView({
   const [openSel, setOpenSel] = useState<number | "none" | undefined>(undefined);
   const open = openSel === undefined ? activeDefault : openSel === "none" ? null : openSel;
 
+  // إرسالية البروتوكول المفتوح تعمل تلقائياً عند فتحه
+  const openProto = state?.protocols.find((p) => p.n === open && p.unlocked) ?? null;
+  useAutoTransmission(openProto?.audio ?? null, `إرسالية ${openProto?.guardianName ?? "البروتوكول"}`);
+
   if (!state) return null;
 
   const done = state.protocols.filter((p) => p.completed).length;
@@ -45,11 +49,21 @@ export default function OpsView({
           sub="عشرة أبواب متسلسلة — لا يُفتح الباب إلا بإسقاط من قبله"
           icon={<span className="font-mono text-sm">⌖</span>}
         />
-        <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
+        <div className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-7">
           <StatChip label="بروتوكولات مكتملة" value={`${done}/${totalProto}`} tone="green" />
           <StatChip label="ألغاز محلولة" value={`${state.stats.solvedCount}/${state.stats.totalPuzzles}`} />
           <StatChip label="النقاط" value={state.agent.points} tone="amber" />
           <StatChip label="شظايا" value={state.shards.filter((s) => s.word).length} />
+          <StatChip
+            label="مسارات ميدانية"
+            value={`${state.stats.pathSolved}/${state.stats.pathTotal}`}
+            tone="amber"
+          />
+          <StatChip
+            label="منارات ممسوحة"
+            value={`${state.stats.scansFound}/${state.stats.scansTotal}`}
+            tone="amber"
+          />
           <StatChip
             label="ملحقات خارجية"
             value={`${state.stats.externalSolved}/${state.stats.externalTotal}`}

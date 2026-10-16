@@ -37,6 +37,47 @@ export default function ArchiveView({ game }: { game: Game }) {
   };
 
   // الأرشيف الصوتي: ما فُتح لهذا الوكيل
+  const pathAudios = state.paths
+    .filter((p) => p.unlocked)
+    .map((p) => ({ file: p.audio, label: `إرسالية مسار: ${p.name}` }));
+  const pathsOpen = state.paths.some((p) => p.unlocked);
+  const tapes: { file: string; label: string }[] = [];
+  if (pathsOpen) {
+    tapes.push(
+      { file: "/audio/distorted-tape-broadcast-spectrum-room.mp3", label: "شريط قديم: بث غرفة الطيف" },
+      { file: "/audio/grieving-tape-writer-confession.mp3", label: "شريط قديم: اعتراف الكاتبة" },
+      { file: "/audio/deep-phone-paths-seven-gates.mp3", label: "الوسيط: البوابات السبع" }
+    );
+  }
+  if (state.paths.some((p) => p.key === "guardian" && p.unlocked)) {
+    tapes.push(
+      { file: "/audio/haunted-tape-seventh-voice-echo.mp3", label: "شريط قديم: الصوت السابع" },
+      { file: "/audio/urgent-phone-distress-call-guardian.mp3", label: "نداء استغاثة: الحارس" }
+    );
+  }
+  if (state.paths.some((p) => p.key === "heirs" && p.unlocked)) {
+    tapes.push(
+      { file: "/audio/whispering-tape-twin-versions.mp3", label: "شريط مهموس: النسختان التوأمان" },
+      { file: "/audio/distorted-tape-heirs-fake-warning.mp3", label: "تحذير الورثة المشوّه" }
+    );
+  }
+  if (state.paths.some((p) => p.key === "tenth" && p.unlocked)) {
+    tapes.push(
+      { file: "/audio/distorted-tape-scream-1998-basement.mp3", label: "شريط ١٩٩٨: القبو — صراخ" },
+      { file: "/audio/haunted-tape-footsteps-s17-corridor.mp3", label: "شريط قديم: خطوات ممر S17" }
+    );
+  }
+  if (state.agent.plateUnlocked) {
+    tapes.push({ file: "/audio/distorted-tape-fm-lesson-plate.mp3", label: "درس ف.م.: الصفيحة" });
+  }
+  if (state.scans.foundCount > 0) {
+    tapes.push({ file: "/audio/tense-tape-knocking-archive-door.mp3", label: "شريط قديم: طرق باب الأرشيف" });
+  }
+  tapes.push(
+    { file: "/audio/urgent-phone-field-scan-briefing.mp3", label: "إحاطة الميدان" },
+    { file: "/audio/mysterious-phone-scan-beacon-confirmed.mp3", label: "تأكيد المنارة" }
+  );
+
   const unlockedAudio = [
     { file: "/audio/deep-phone-boot-secure-line.mp3", label: "الخط آمن — الإقلاع" },
     { file: "/audio/deep-phone-intro-first-transmission.mp3", label: "الإرسالية الأولى" },
@@ -44,6 +85,8 @@ export default function ArchiveView({ game }: { game: Game }) {
     ...state.protocols
       .filter((p) => p.unlocked)
       .map((p) => ({ file: p.audio, label: `إرسالية ${p.guardianName}` })),
+    ...pathAudios,
+    ...tapes,
     ...(state.agent.plateUnlocked
       ? [{ file: "/audio/deep-phone-plate-transparent.mp3", label: "الصفيحة الشفافة" }]
       : []),
@@ -69,6 +112,7 @@ export default function ArchiveView({ game }: { game: Game }) {
       ? [{ file: "/audio/deep-phone-finale-you-are-the-ninth.mp3", label: "الخاتمة — أنت التاسع" }]
       : []),
   ];
+  const totalAudio = 2 + PROTOCOLS.length + AUDIO_AA.length + 2 + pathAudios.length + tapes.length + 1;
 
   const plateArchiveNote = state.agent.plateUnlocked
     ? "خلف كل وثيقة محرَّرة سطرٌ أخير محفوظ لمن يملك الصفيحة: «أنت تقرأ الآن ما كُتب لغيرك... ووصل إليك»."
@@ -183,7 +227,7 @@ export default function ArchiveView({ game }: { game: Game }) {
           ))}
         </div>
         <p className="mt-3 text-[0.65rem] leading-5 text-muted-foreground">
-          {unlockedAudio.length} من {2 + PROTOCOLS.length + AUDIO_AA.length + 2} تسجيلاً مفتوحاً لك.
+          {unlockedAudio.length} من {totalAudio} تسجيلاً مفتوحاً لك.
           كل الأصوات ملفات MP3 ثابتة في المشروع — لا استدعاءات API وقت التشغيل إطلاقاً.
         </p>
       </div>
