@@ -11,6 +11,7 @@ import { PhonePlayer, sfx } from "./audio";
 import { SectionHead } from "./effects";
 import type { Game } from "./useGame";
 import { AUDIO_AA } from "@/lib/game/content-aa";
+import { VOICE_STATS } from "@/lib/game/voices";
 
 // واجهة الوثائق الصوتية من المحرك (المسارات فقط — بلا نصوص سرية)
 import { PROTOCOLS } from "@/lib/game/content";
@@ -230,6 +231,17 @@ export default function ArchiveView({ game }: { game: Game }) {
           {unlockedAudio.length} من {totalAudio} تسجيلاً مفتوحاً لك.
           كل الأصوات ملفات MP3 ثابتة في المشروع — لا استدعاءات API وقت التشغيل إطلاقاً.
         </p>
+        <div className="mt-2 flex flex-wrap items-center gap-1.5 text-[0.6rem] text-muted-foreground">
+          <span className="rounded-full border border-border/60 bg-muted/30 px-2 py-0.5">
+            🎭 فريق أصوات متنوع: {VOICE_STATS.distinct} صوتاً ({VOICE_STATS.female} أنثى / {VOICE_STATS.male} ذكر)
+          </span>
+          <span className="rounded-full border border-rose-400/40 bg-rose-400/10 px-2 py-0.5 text-rose-300">
+            ♀ الكاتبة ف.م. — صوت أنثى
+          </span>
+          <span className="rounded-full border border-primary/30 bg-primary/5 px-2 py-0.5 text-primary/90">
+            الحراس التسعة — تسعة أصوات مختلفة
+          </span>
+        </div>
       </div>
     </div>
   );

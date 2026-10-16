@@ -6,9 +6,10 @@
 // مورس يُخلَّق محلياً بمذبذب Web Audio (تفاعل واجهة فقط)
 // ═══════════════════════════════════════════════════════════
 import { useEffect, useRef, useState } from "react";
-import { Play, Pause, Radio, Volume2, VolumeX } from "lucide-react";
+import { Play, Pause, Radio, Volume2, VolumeX, Mic } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { MORSE_TABLE } from "@/lib/game/ciphers";
+import { speakerOf } from "@/lib/game/voices";
 
 export const AUDIO_SFX = {
   ring: "/audio/sfx-phone-ring.mp3",
@@ -251,6 +252,31 @@ export function playTextAsMorse(text: string): number {
   return playMorseLocal(signal);
 }
 
+// ── شارة المتحدث: تميّز صوت أنثى/ذكر/محايد بصرياً ─────────
+function SpeakerBadge({ src }: { src: string }) {
+  const info = speakerOf(src);
+  if (!info) return null;
+  const isFemale = info.gender === "female";
+  const isNeutral = info.gender === "neutral";
+  return (
+    <span
+      className={cn(
+        "inline-flex shrink-0 items-center gap-1 rounded-full border px-1.5 py-0.5 text-[0.58rem] font-bold leading-none",
+        isFemale
+          ? "border-rose-400/50 bg-rose-400/10 text-rose-300"
+          : isNeutral
+            ? "border-border/60 bg-muted/40 text-muted-foreground"
+            : "border-primary/40 bg-primary/10 text-primary"
+      )}
+      title={`الصوت: ${info.voice} (${info.gender === "female" ? "أنثى" : info.gender === "male" ? "ذكر" : "محايد"})`}
+    >
+      <Mic className="h-2.5 w-2.5" />
+      {info.speaker}
+      {isFemale && <span aria-hidden>♀</span>}
+    </span>
+  );
+}
+
 // ── مشغّل الإرسالية: رنة ثم الصوت ─────────────────────────
 export function PhonePlayer({
   src,
@@ -334,8 +360,9 @@ export function PhonePlayer({
       </button>
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <Radio className={cn("h-3.5 w-3.5", playing && "text-primary")} />
+          <Radio className={cn("h-3.5 w-3.5 shrink-0", playing && "text-primary")} />
           <span className="truncate">{label}</span>
+          <SpeakerBadge src={src} />
           {phase === "ringing" && <span className="rec-dot text-primary">● حركة خط...</span>}
           {phase === "playing" && <span className="text-primary">● بث</span>}
         </div>

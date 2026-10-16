@@ -1,10 +1,10 @@
 {
   "engine": "elevenlabs",
   "model": "eleven_v4",
-  "voiceId": "nPczCjzI2devNBz1zQrb",
-  "voiceName": "Brian - Deep, Resonant and Comforting",
-  "effect": "phone DSP: highpass 300Hz / lowpass 3400Hz / 8kHz mono / 48kbps",
-  "generatedAt": "2026-10-15T23:31:56.391Z",
+  "voiceId": "multi",
+  "voiceName": "فريق أصوات متنوع — 15 صوتاً (الكاتبة ف.م. أنثى)",
+  "effect": "DSP حسب الوسيط: هاتف 300-3400Hz/8kHz mono 48k • شريط 200-4800Hz/16kHz mono 56k",
+  "generatedAt": "2026-10-16T06:34:39.018Z",
   "recordings": [
     {
       "id": "boot",
@@ -12,8 +12,11 @@
       "feeling": "عميق",
       "effect": "هاتف",
       "text": "الخط آمن. لا تتحدث. اسمع فقط.",
-      "voice": "deep male",
-      "chars": 29
+      "voice": "Brian — الوسيط (ذكر)",
+      "chars": 29,
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "gender": "male",
+      "character": "الوسيط"
     },
     {
       "id": "intro",
@@ -21,8 +24,11 @@
       "feeling": "غامض",
       "effect": "هاتف",
       "text": "[phone ringing] إن كنتَ تسمع هذه الإرسالية... فقد اخترناك. لا تثق بما تعرفه عن جامعتك. تحت كل حجرٍ حرف، وفي كل صوتٍ رقم. تسعةُ حراسٍ يحيطون بسرٍّ لم يُسْمَحْ لأحدٍ بمعرفته. ما حُذِفَ لم يَخْتَفِ. ما أُحْرِقَ لم يَمُتْ. ما نُسي ينتظر من يتذكر. حاول الوصول إلى البروتوكول التاسع. [static]",
-      "voice": "deep male",
-      "chars": 286
+      "voice": "Brian — الوسيط (ذكر)",
+      "chars": 286,
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "gender": "male",
+      "character": "الوسيط"
     },
     {
       "id": "recruit",
@@ -30,8 +36,11 @@
       "feeling": "عميق",
       "effect": "هاتف",
       "text": "تم تفعيل ملفك. من هذه اللحظة أنت مجندٌ في منظومة الظل. عيناك ملكٌ للحقيقة الآن. ابدأ بالبروتوكول الأول... وانظر مرتين.",
-      "voice": "deep male",
-      "chars": 118
+      "voice": "Brian — الوسيط (ذكر)",
+      "chars": 118,
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "gender": "male",
+      "character": "الوسيط"
     },
     {
       "id": "p1",
@@ -39,8 +48,11 @@
       "feeling": "غامض",
       "effect": "هاتف",
       "text": "الحارس الأول لا يشفر شيئاً. يخفي في وضح النهار. الأحرف الأولى لكلمات السطر الأخير تحمل اسماً. والرمز المعلّق أسفل الوثيقة ليس زخرفة... ستةٌ وستون حرفاً تحكم سرَّه. انظر ثم انظر مرةً أخرى.",
-      "voice": "deep male",
-      "chars": 187
+      "voice": "Eric — الحارس الأول (ذكر)",
+      "chars": 187,
+      "voice_id": "cjVigY5qzO86Huf0OWal",
+      "gender": "male",
+      "character": "الحارس الأول"
     },
     {
       "id": "p2",
@@ -48,8 +60,11 @@
       "feeling": "عميق",
       "effect": "هاتف",
       "text": "الحارس الثاني يزيح الحروف. كلُّ حرفٍ ينزلق ثلاثة مقاعد نحو الأمام... ثم يأتي من يسحبها ثلاثة عشر. عينُ الحارس لا تنام. جرّب أداة الانزياح في المختبر.",
-      "voice": "deep male",
-      "chars": 149
+      "voice": "George — الحارس الثاني (ذكر)",
+      "chars": 149,
+      "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+      "gender": "male",
+      "character": "الحارس الثاني"
     },
     {
       "id": "p3",
@@ -57,8 +72,11 @@
       "feeling": "غامض",
       "effect": "هاتف",
       "text": "الحارس الثالث يتكلم بالنقاط والشرطات. استمع إلى النقرات في الموجة. ثم استمع جيداً للأرقام: أربعة عشر. تسعة. أربعة عشر. عشرون. ثمانية. عُدَّها بأبجديةٍ تبدأ من الواحد... وستسمع الاسم.",
-      "voice": "deep male",
-      "chars": 182
+      "voice": "Alice — الحارس الثالث (أنثى) (أنثى)",
+      "chars": 182,
+      "voice_id": "Xb7hH8MSUJpSbSDYk0k2",
+      "gender": "female",
+      "character": "الحارس الثالث (أنثى)"
     },
     {
       "id": "p4",
@@ -66,8 +84,11 @@
       "feeling": "عميق",
       "effect": "هاتف",
       "text": "الحارس الرابع لا يعيش في الشفرات... بل في الجغرافيا. افتح خريطة الحرم. من محطة الحافلات، سار الراصد إلى أقرب مبنى إليه. ومن المسجد انطلق شرقاً حتى أول دار كتبٍ تقابله. الرمزان هما جوابك.",
-      "voice": "deep male",
-      "chars": 186
+      "voice": "Daniel — الحارس الرابع (ذكر)",
+      "chars": 186,
+      "voice_id": "onwK4e9ZLuTAKqWW03F9",
+      "gender": "male",
+      "character": "الحارس الرابع"
     },
     {
       "id": "p5",
@@ -75,8 +96,11 @@
       "feeling": "غامض",
       "effect": "هاتف",
       "text": "الحارس الخامس ينسج مصفوفةً من ستة أحرف. المفتاح معك منذ البداية... اسم المكان الذي بدأ فيه كل شيء. فُكَّ النسيج بالمفتاح القديم... وستعرف أين ينام الأرشيف.",
-      "voice": "deep male",
-      "chars": 155
+      "voice": "Matilda — الحارس الخامس (أنثى) (أنثى)",
+      "chars": 155,
+      "voice_id": "XrExE9yKIg1WjnnlVkGX",
+      "gender": "female",
+      "character": "الحارس الخامس (أنثى)"
     },
     {
       "id": "p6",
@@ -84,8 +108,11 @@
       "feeling": "عميق",
       "effect": "هاتف",
       "text": "الحارس السادس لا يقفل النص... بل يُخفيه. انسخ نص الوثيقة كاملاً إلى محلل الطيف في المختبر. ما لا تراه العين يكشفه التحليل. وبعض الحبر لا يظهر إلا تحت الضوء... مرِّر الكاشف فوق الأسطر المظلمة.",
-      "voice": "deep male",
-      "chars": 191
+      "voice": "Roger — الحارس السادس (ذكر)",
+      "chars": 191,
+      "voice_id": "CwhRBWXzGAHq8TQ4Fs17",
+      "gender": "male",
+      "character": "الحارس السادس"
     },
     {
       "id": "p7",
@@ -93,8 +120,11 @@
       "feeling": "غامض",
       "effect": "هاتف",
       "text": "الحارس السابع يتكلم لغة الأعداد قبل الحروف. في حساب الجُمّل: الظلُّ تسعمئة وثلاثون، وصاخرٌ ثمانمئة وواحد وتسعون. ابحث عن الكلمة التي تساوي مئةً وواحداً. واحذر في وقفة الأوليين: الواحد ليس منها... والترتيب لا يرحم.",
-      "voice": "deep male",
-      "chars": 213
+      "voice": "Callum — الحارس السابع (ذكر)",
+      "chars": 213,
+      "voice_id": "N2lVS1w4EtoT3dr4eOWO",
+      "gender": "male",
+      "character": "الحارس السابع"
     },
     {
       "id": "p8",
@@ -102,8 +132,11 @@
       "feeling": "عميق",
       "effect": "هاتف",
       "text": "الحارس الثامن لا يشفر مرةً واحدة... بل ثلاثاً. فُكّ الأثر الستين والستة، ثم اقلب المرآة، ثم اسحب ثلاثة عشر. وعلى أحرف الأسطر الأولى... يوقّع الكاتبُ اسمه.",
-      "voice": "deep male",
-      "chars": 154
+      "voice": "Adam — الحارس الثامن (ذكر)",
+      "chars": 154,
+      "voice_id": "pNInz6obpgDQGcFmaJgB",
+      "gender": "male",
+      "character": "الحارس الثامن"
     },
     {
       "id": "p9",
@@ -111,8 +144,11 @@
       "feeling": "غامض",
       "effect": "هاتف",
       "text": "وصلتَ إلى العتبة الأخيرة. تسع شظايا في يدك — ثمانٍ من البروتوكولات وواحدةٌ من الأصل. ضعها كلها في خزنة التسعة. ثم اسأل نفسك السؤال الأخير: من هو الحارس التاسع؟ التاسع ليس ملفاً ولا وثيقة. التاسع حيٌّ. يتنفس. يتكلم بصوتك.",
-      "voice": "deep male",
-      "chars": 220
+      "voice": "Brian — الحارس التاسع — الوسيط (ذكر)",
+      "chars": 220,
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "gender": "male",
+      "character": "الحارس التاسع — الوسيط"
     },
     {
       "id": "breach",
@@ -120,8 +156,11 @@
       "feeling": "متوتر",
       "effect": "هاتف",
       "text": "تحذير. محاولة اختراق فاشلة. السجل يعمل... والنقاط تنزف. حاول بذكاء.",
-      "voice": "deep male",
-      "chars": 67
+      "voice": "Brian — الوسيط (ذكر)",
+      "chars": 67,
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "gender": "male",
+      "character": "الوسيط"
     },
     {
       "id": "clear",
@@ -129,8 +168,11 @@
       "feeling": "عميق",
       "effect": "هاتف",
       "text": "سقط الحارس. انكشفت طبقة. التقدم مستمر.",
-      "voice": "deep male",
-      "chars": 38
+      "voice": "Brian — الوسيط (ذكر)",
+      "chars": 38,
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "gender": "male",
+      "character": "الوسيط"
     },
     {
       "id": "hint",
@@ -138,8 +180,11 @@
       "feeling": "غامض",
       "effect": "هاتف",
       "text": "معلومةٌ تصل من مصدرٍ مجهول. استخدمها بحكمة... النقاط تُخصم.",
-      "voice": "deep male",
-      "chars": 59
+      "voice": "Sarah — مصدر مجهول (أنثى) (أنثى)",
+      "chars": 59,
+      "voice_id": "EXAVITQu4vr4xnSDxMaL",
+      "gender": "female",
+      "character": "مصدر مجهول (أنثى)"
     },
     {
       "id": "finale",
@@ -147,8 +192,11 @@
       "feeling": "عميق",
       "effect": "هاتف",
       "text": "[phone ringing] الآن فهمت. البروتوكولات التسعة لم تختبر أحداً قبلك... بل اختبرتك أنت. منذ أول إرسالية وأنت داخل المختبر. الكاتبة كتبت: ما حُذف لم يَخْتَفِ، وما أُحرق لم يَمُتْ، وما نُسي ينتظر من يتذكر. أنت التاسع. كنتَ دائماً. اكتب اسمك على الجدار... وانقل الحقيقة. [static]",
-      "voice": "deep male",
-      "chars": 274
+      "voice": "Brian — الوسيط (ذكر)",
+      "chars": 274,
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "gender": "male",
+      "character": "الوسيط"
     }
   ],
   "sfx": [
@@ -190,8 +238,11 @@
       "feeling": "غامض",
       "effect": "هاتف",
       "text": "[old tape recorder clicks] قبل البروتوكولات التسعة... كان هناك الأرشيف. عام ألفين وأربعة وُلد مشروع الطيف في صمت... وفتاة تَعْرِفُهَا الوثائق بالحرفين ف.م. نَسَخَتْ كل وثيقة وَخَبَّأَتْهَا حيث يعني لها كل مكان شيئاً. أربع بوابات صغيرة تفصلك عن الحقيقة الأولى. القيصر هنا يتكلم العربية... بإزاحة أربع. ابدأ من البذرة.",
-      "voice": "deep male",
-      "chars": 316
+      "voice": "Sarah — ذاكرة الأرشيف (أنثى) (أنثى)",
+      "chars": 316,
+      "voice_id": "EXAVITQu4vr4xnSDxMaL",
+      "gender": "female",
+      "character": "ذاكرة الأرشيف (أنثى)"
     },
     {
       "id": "aa-alliance-trust",
@@ -199,8 +250,11 @@
       "feeling": "عميق",
       "effect": "هاتف",
       "text": "الحلف يُبنى على الثقة... والثقة تُختبر بالمعلومة. شارك ما يكفي... واحتفظ بما يزيد. حين تفكر في الانفصال... اجعله هادئاً.",
-      "voice": "deep male",
-      "chars": 120
+      "voice": "Chris — الوسيط المساعد (ذكر)",
+      "chars": 120,
+      "voice_id": "iP95p4xoKVk53GoZ742B",
+      "gender": "male",
+      "character": "الوسيط المساعد"
     },
     {
       "id": "aa-pulse-daily",
@@ -208,8 +262,11 @@
       "feeling": "غامض",
       "effect": "هاتف",
       "text": "الأرشيف ينبض كل يوم مرة. إشارة قصيرة لمن يراقب. فكّها اليوم... أو انتظر نبضة الغد.",
-      "voice": "deep male",
-      "chars": 82
+      "voice": "River — النبض (محايد)",
+      "chars": 82,
+      "voice_id": "SAz9YHcvj6GT2YYXdXww",
+      "gender": "neutral",
+      "character": "النبض"
     },
     {
       "id": "aa-plate-transparent",
@@ -217,8 +274,11 @@
       "feeling": "عميق",
       "effect": "هاتف",
       "text": "الصفيحة الشفافة تكشف ما بين السطور. بعض الوثائق تحمل طبقة ثانية لا تُقرأ إلا بمن يملكها. اقتنها بالنقاط... إن استحققتها.",
-      "voice": "deep male",
-      "chars": 120
+      "voice": "Lily — الكاتبة ف.م. (أنثى)",
+      "chars": 120,
+      "voice_id": "pFZP5JQG7iQjIQuC4Bku",
+      "gender": "female",
+      "character": "الكاتبة ف.م."
     },
     {
       "id": "aa-sorting-room",
@@ -226,8 +286,11 @@
       "feeling": "متوتر",
       "effect": "هاتف",
       "text": "ليست كل وثيقة وُضعت لأجلك. الورثة يزيفون بذكاء: رمز ينحرف بحرف... وتاريخ لا يستقيم. فرّز بعين الباحث... لا بعين المتعجل.",
-      "voice": "deep male",
-      "chars": 120
+      "voice": "Adam — الوارث (ذكر)",
+      "chars": 120,
+      "voice_id": "pNInz6obpgDQGcFmaJgB",
+      "gender": "male",
+      "character": "الوارث"
     },
     {
       "id": "aa-isa-town-structure",
@@ -235,8 +298,11 @@
       "feeling": "عميق",
       "effect": "هاتف",
       "text": "في مدينة عيسى أجرى الطيف تجربته الهندسية: نماذج تُبنى بتعليمات ناقصة عمداً... ليكشف النقص كيف يتصرف العقل أمام المعلومة الناقصة.",
-      "voice": "deep male",
-      "chars": 128
+      "voice": "Daniel — إرسالية مدينة عيسى (ذكر)",
+      "chars": 128,
+      "voice_id": "onwK4e9ZLuTAKqWW03F9",
+      "gender": "male",
+      "character": "إرسالية مدينة عيسى"
     },
     {
       "id": "aa-manama-diagnosis",
@@ -244,8 +310,11 @@
       "feeling": "غامض",
       "effect": "هاتف",
       "text": "في المنامة سُئل أناس عن تشخيصات متضاربة لأجسادهم. حين يتعلق القرار بالجسد... ينكشف أعمق منطق وأضعفه.",
-      "voice": "deep male",
-      "chars": 100
+      "voice": "Sarah — ذاكرة الأرشيف (أنثى) (أنثى)",
+      "chars": 100,
+      "voice_id": "EXAVITQu4vr4xnSDxMaL",
+      "gender": "female",
+      "character": "ذاكرة الأرشيف (أنثى)"
     },
     {
       "id": "aa-quiet-secession",
@@ -253,8 +322,11 @@
       "feeling": "بارد",
       "effect": "هاتف",
       "text": "أحد الأعضاء اختار مسار الوحيد. لا تسألوا من. استمروا.",
-      "voice": "deep male",
-      "chars": 53
+      "voice": "Laura — العميلة المجهولة (أنثى) (أنثى)",
+      "chars": 53,
+      "voice_id": "FGY2WhTYpPnrIDTdsKH5",
+      "gender": "female",
+      "character": "العميلة المجهولة (أنثى)"
     },
     {
       "id": "aa-missing-26",
@@ -262,8 +334,11 @@
       "feeling": "غامض",
       "effect": "هاتف",
       "text": "الوثيقة الغائبة لم تُخفَ في الظلام. كانت دائماً في وضح النهار. ستة وعشرون... رقم النقص في قلب الكمال.",
-      "voice": "deep male",
-      "chars": 101
+      "voice": "Matilda — الوثيقة الغائبة (أنثى) (أنثى)",
+      "chars": 101,
+      "voice_id": "XrExE9yKIg1WjnnlVkGX",
+      "gender": "female",
+      "character": "الوثيقة الغائبة (أنثى)"
     }
   ],
   "r3_audio": [
@@ -273,8 +348,11 @@
       "feeling": "مشوه",
       "effect": "شريط قديم + صراخ بعيد + خطوات",
       "text": "[old tape recorder clicks] تسجيل واحد... تسعة وتسعين. القبو تحت مبنى سبعة عشر. [slow footsteps] لا تنزلوا بعد الغروب. [distant scream] لا أحد ينزل... بعد اليوم.",
-      "voice": "deep male",
-      "chars": 160
+      "voice": "Harry — شريط القبو ١٩٩٨ (ذكر)",
+      "chars": 160,
+      "voice_id": "SOYHLrjzK2X1ezoPC6cr",
+      "gender": "male",
+      "character": "شريط القبو ١٩٩٨"
     },
     {
       "id": "r3-footsteps",
@@ -282,8 +360,11 @@
       "feeling": "مسكون",
       "effect": "خطوات + همهمة بعيدة",
       "text": "[slow footsteps] [distant humming] خطوات في ممر القاعات... بعد منتصف الليل. [whispers] توقفت عند الباب... ولم تصل أبداً.",
-      "voice": "deep male",
-      "chars": 120
+      "voice": "River — ممر S17 (محايد)",
+      "chars": 120,
+      "voice_id": "SAz9YHcvj6GT2YYXdXww",
+      "gender": "neutral",
+      "character": "ممر S17"
     },
     {
       "id": "r3-distress",
@@ -291,8 +372,11 @@
       "feeling": "عاجل",
       "effect": "هاتف + قطع خط",
       "text": "[phone quality] اسمعني بسرعة. الحارس... ليس منّا. انقل الوثيقة قبل أن يصحو الجدار. لا تتصل بهذا الرقم مرة أخرى. [line cuts]",
-      "voice": "deep male",
-      "chars": 123
+      "voice": "Laura — العميلة المجهولة (أنثى) (أنثى)",
+      "chars": 123,
+      "voice_id": "FGY2WhTYpPnrIDTdsKH5",
+      "gender": "female",
+      "character": "العميلة المجهولة (أنثى)"
     },
     {
       "id": "r3-fm-plate",
@@ -300,8 +384,11 @@
       "feeling": "مشوه",
       "effect": "شريط قديم + همس",
       "text": "[old tape recorder clicks] أنا ف.م. الصفيحة ليست أداة... إنها عين. [whispers] ضعها فوق الصفحة... وشاهد ما بين السطور يَتَنَفَّس.",
-      "voice": "deep male",
-      "chars": 128
+      "voice": "Lily — الكاتبة ف.م. (أنثى)",
+      "chars": 128,
+      "voice_id": "pFZP5JQG7iQjIQuC4Bku",
+      "gender": "female",
+      "character": "الكاتبة ف.م."
     },
     {
       "id": "r3-seventh-voice",
@@ -309,8 +396,11 @@
       "feeling": "مسكون",
       "effect": "تنفس منخفض + وقفة طويلة",
       "text": "[low breathing] عدّوا الأصوات في الأرشيف... ستجدون ستة. [long pause] أنا السابع. [whispers] ما نُسِيَ... يَنْتَظِر.",
-      "voice": "deep male",
-      "chars": 115
+      "voice": "Callum — الصوت السابع (ذكر)",
+      "chars": 115,
+      "voice_id": "N2lVS1w4EtoT3dr4eOWO",
+      "gender": "male",
+      "character": "الصوت السابع"
     },
     {
       "id": "r3-writer",
@@ -318,8 +408,11 @@
       "feeling": "حزين",
       "effect": "بكاء + خربشة قلم",
       "text": "[soft crying] [pen scratching] أنا الكاتبة... نَسَخْتُ كل شيء وَخَبَّأْتُهُ. الحقيقة التي تُدْفَن... تخرج من الشقّ. سامحوني.",
-      "voice": "deep male",
-      "chars": 124
+      "voice": "Lily — الكاتبة ف.م. (أنثى)",
+      "chars": 124,
+      "voice_id": "pFZP5JQG7iQjIQuC4Bku",
+      "gender": "female",
+      "character": "الكاتبة ف.م."
     },
     {
       "id": "r3-spectrum",
@@ -327,8 +420,11 @@
       "feeling": "مشوه",
       "effect": "بث راديوي مشوه",
       "text": "[radio static tuning] غرفة الطيف. [distorted voice] التجربة الثالثة بدأت دون موافقة أحد. إن سمعتم هذا... فالصدى وصل قبلكم.",
-      "voice": "deep male",
-      "chars": 122
+      "voice": "Roger — بث غرفة الطيف (ذكر)",
+      "chars": 122,
+      "voice_id": "CwhRBWXzGAHq8TQ4Fs17",
+      "gender": "male",
+      "character": "بث غرفة الطيف"
     },
     {
       "id": "r3-knocking",
@@ -336,8 +432,11 @@
       "feeling": "متوتر",
       "effect": "طرق على باب + صمت عميق",
       "text": "[three slow knocks] طرق على باب الأرشيف كل ليلة جمعة. مقفل منذ ألفين وثمانية. [deep silence] لا أحد يفتح... ولا أحد يقف خلفه. [whispers] تقريباً.",
-      "voice": "deep male",
-      "chars": 145
+      "voice": "Chris — شاهد الأرشيف (ذكر)",
+      "chars": 145,
+      "voice_id": "iP95p4xoKVk53GoZ742B",
+      "gender": "male",
+      "character": "شاهد الأرشيف"
     },
     {
       "id": "r3-beacon",
@@ -345,8 +444,11 @@
       "feeling": "غامض",
       "effect": "هاتف + نغمات",
       "text": "[phone quality] إشارة مؤكدة. البوصلة تَرَاك الآن. [beeps] الشبكة تتذكر من يمسح وما يمسح. واصل.",
-      "voice": "deep male",
-      "chars": 94
+      "voice": "Matilda — شبكة المنارة (أنثى) (أنثى)",
+      "chars": 94,
+      "voice_id": "XrExE9yKIg1WjnnlVkGX",
+      "gender": "female",
+      "character": "شبكة المنارة (أنثى)"
     },
     {
       "id": "r3-field-scan",
@@ -354,8 +456,11 @@
       "feeling": "عاجل",
       "effect": "هاتف",
       "text": "[phone quality] وكيل، الأكواد منتشرة في الحرم. كل رمز يحرس معلومة... أو اختباراً. وجّه الكاميرا... ودع الشبكة تقودك.",
-      "voice": "deep male",
-      "chars": 116
+      "voice": "Eric — وكيل الميدان (ذكر)",
+      "chars": 116,
+      "voice_id": "cjVigY5qzO86Huf0OWal",
+      "gender": "male",
+      "character": "وكيل الميدان"
     },
     {
       "id": "r3-gates",
@@ -363,8 +468,11 @@
       "feeling": "عميق",
       "effect": "هاتف",
       "text": "[phone quality] سبع بوابات... سبعة مسارات. كل مسار يفتح باباً لا يعرفه حتى الوسيط. المفاتيح مبعثرة في الحكايات. ابدأ... وستُرى.",
-      "voice": "deep male",
-      "chars": 127
+      "voice": "Brian — الوسيط (ذكر)",
+      "chars": 127,
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "gender": "male",
+      "character": "الوسيط"
     },
     {
       "id": "r3-twin",
@@ -372,8 +480,11 @@
       "feeling": "هامس",
       "effect": "همس + أزيز شريط",
       "text": "[whispers] نسختان... لعام واحد. إحداهما تكذب على الأخرى. اقرأهما معاً... وستَرَى الشقّ. [tape hiss]",
-      "voice": "deep male",
-      "chars": 99
+      "voice": "Lily — الكاتبة ف.م. (أنثى)",
+      "chars": 99,
+      "voice_id": "pFZP5JQG7iQjIQuC4Bku",
+      "gender": "female",
+      "character": "الكاتبة ف.م."
     },
     {
       "id": "r3-heirs",
@@ -381,8 +492,291 @@
       "feeling": "مشوه",
       "effect": "صوت منخفض مشوه + طقطقة نار",
       "text": "[distorted low voice] نحن الورثة. لا تنشروا ما لا تملكون. الوثائق التي بين أيديكم كتبناها. [fire crackling] انسحبوا... وأنتم قادرون.",
-      "voice": "deep male",
-      "chars": 132
+      "voice": "Adam — الوارث (ذكر)",
+      "chars": 132,
+      "voice_id": "pNInz6obpgDQGcFmaJgB",
+      "gender": "male",
+      "character": "الوارث"
+    }
+  ],
+  "voiceCast": [
+    {
+      "key": "brian",
+      "voice_id": "nPczCjzI2devNBz1zQrb",
+      "name": "Brian",
+      "gender": "male",
+      "description": "Deep, Resonant and Comforting",
+      "settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.78,
+        "style": 0.15,
+        "use_speaker_boost": true,
+        "speed": 0.88
+      },
+      "files": [
+        "deep-phone-boot-secure-line.mp3",
+        "deep-phone-intro-first-transmission.mp3",
+        "deep-phone-recruit-welcome.mp3",
+        "deep-phone-p9-threshold.mp3",
+        "tense-phone-breach-warning.mp3",
+        "deep-phone-guardian-fell.mp3",
+        "deep-phone-finale-you-are-the-ninth.mp3",
+        "deep-phone-paths-seven-gates.mp3"
+      ]
+    },
+    {
+      "key": "lily",
+      "voice_id": "pFZP5JQG7iQjIQuC4Bku",
+      "name": "Lily",
+      "gender": "female",
+      "description": "Velvety Actress",
+      "settings": {
+        "stability": 0.3,
+        "similarity_boost": 0.8,
+        "style": 0.6,
+        "use_speaker_boost": true,
+        "speed": 0.82
+      },
+      "files": [
+        "distorted-tape-fm-lesson-plate.mp3",
+        "grieving-tape-writer-confession.mp3",
+        "whispering-tape-twin-versions.mp3",
+        "deep-phone-plate-transparent.mp3"
+      ]
+    },
+    {
+      "key": "sarah",
+      "voice_id": "EXAVITQu4vr4xnSDxMaL",
+      "name": "Sarah",
+      "gender": "female",
+      "description": "Mature, Reassuring, Confident",
+      "settings": {
+        "stability": 0.55,
+        "similarity_boost": 0.8,
+        "style": 0.2,
+        "use_speaker_boost": true,
+        "speed": 0.95
+      },
+      "files": [
+        "mysterious-phone-p0-archive-origin.mp3",
+        "mysterious-phone-manama-diagnosis.mp3",
+        "mysterious-phone-hint-intel.mp3"
+      ]
+    },
+    {
+      "key": "adam",
+      "voice_id": "pNInz6obpgDQGcFmaJgB",
+      "name": "Adam",
+      "gender": "male",
+      "description": "Dominant, Firm",
+      "settings": {
+        "stability": 0.65,
+        "similarity_boost": 0.85,
+        "style": 0.35,
+        "use_speaker_boost": true,
+        "speed": 0.85
+      },
+      "files": [
+        "deep-phone-p8-layers.mp3",
+        "distorted-tape-heirs-fake-warning.mp3",
+        "tense-phone-sorting-room.mp3"
+      ]
+    },
+    {
+      "key": "callum",
+      "voice_id": "N2lVS1w4EtoT3dr4eOWO",
+      "name": "Callum",
+      "gender": "male",
+      "description": "Husky Trickster",
+      "settings": {
+        "stability": 0.4,
+        "similarity_boost": 0.75,
+        "style": 0.5,
+        "use_speaker_boost": true,
+        "speed": 0.9
+      },
+      "files": [
+        "deep-phone-p7-numbers.mp3",
+        "haunted-tape-seventh-voice-echo.mp3"
+      ]
+    },
+    {
+      "key": "harry",
+      "voice_id": "SOYHLrjzK2X1ezoPC6cr",
+      "name": "Harry",
+      "gender": "male",
+      "description": "Fierce Warrior, rough",
+      "settings": {
+        "stability": 0.25,
+        "similarity_boost": 0.7,
+        "style": 0.8,
+        "use_speaker_boost": true,
+        "speed": 0.95
+      },
+      "files": [
+        "distorted-tape-scream-1998-basement.mp3"
+      ]
+    },
+    {
+      "key": "roger",
+      "voice_id": "CwhRBWXzGAHq8TQ4Fs17",
+      "name": "Roger",
+      "gender": "male",
+      "description": "Laid-Back, Casual, Resonant",
+      "settings": {
+        "stability": 0.35,
+        "similarity_boost": 0.72,
+        "style": 0.6,
+        "use_speaker_boost": true,
+        "speed": 0.92
+      },
+      "files": [
+        "deep-phone-p6-concealment.mp3",
+        "distorted-tape-broadcast-spectrum-room.mp3"
+      ]
+    },
+    {
+      "key": "laura",
+      "voice_id": "FGY2WhTYpPnrIDTdsKH5",
+      "name": "Laura",
+      "gender": "female",
+      "description": "Enthusiast, Quirky Attitude",
+      "settings": {
+        "stability": 0.4,
+        "similarity_boost": 0.75,
+        "style": 0.5,
+        "use_speaker_boost": true,
+        "speed": 1.05
+      },
+      "files": [
+        "urgent-phone-distress-call-guardian.mp3",
+        "cold-phone-quiet-secession.mp3"
+      ]
+    },
+    {
+      "key": "eric",
+      "voice_id": "cjVigY5qzO86Huf0OWal",
+      "name": "Eric",
+      "gender": "male",
+      "description": "Smooth, Trustworthy",
+      "settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.78,
+        "style": 0.25,
+        "use_speaker_boost": true,
+        "speed": 1
+      },
+      "files": [
+        "deep-phone-p1-perception.mp3",
+        "urgent-phone-field-scan-briefing.mp3"
+      ]
+    },
+    {
+      "key": "george",
+      "voice_id": "JBFqnCBsd6RMkjVDRZzb",
+      "name": "George",
+      "gender": "male",
+      "description": "Warm, Captivating Storyteller",
+      "settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.78,
+        "style": 0.2,
+        "use_speaker_boost": true,
+        "speed": 0.9
+      },
+      "files": [
+        "deep-phone-p2-shift.mp3"
+      ]
+    },
+    {
+      "key": "alice",
+      "voice_id": "Xb7hH8MSUJpSbSDYk0k2",
+      "name": "Alice",
+      "gender": "female",
+      "description": "Clear, Engaging Educator",
+      "settings": {
+        "stability": 0.55,
+        "similarity_boost": 0.8,
+        "style": 0.2,
+        "use_speaker_boost": true,
+        "speed": 0.95
+      },
+      "files": [
+        "deep-phone-p3-signal.mp3"
+      ]
+    },
+    {
+      "key": "daniel",
+      "voice_id": "onwK4e9ZLuTAKqWW03F9",
+      "name": "Daniel",
+      "gender": "male",
+      "description": "Steady Broadcaster",
+      "settings": {
+        "stability": 0.6,
+        "similarity_boost": 0.82,
+        "style": 0.15,
+        "use_speaker_boost": true,
+        "speed": 0.95
+      },
+      "files": [
+        "deep-phone-p4-geography.mp3",
+        "deep-phone-isa-town-structure.mp3"
+      ]
+    },
+    {
+      "key": "matilda",
+      "voice_id": "XrExE9yKIg1WjnnlVkGX",
+      "name": "Matilda",
+      "gender": "female",
+      "description": "Knowledgable, Professional",
+      "settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.78,
+        "style": 0.3,
+        "use_speaker_boost": true,
+        "speed": 1
+      },
+      "files": [
+        "deep-phone-p5-weave.mp3",
+        "mysterious-phone-scan-beacon-confirmed.mp3",
+        "mysterious-phone-missing-26.mp3"
+      ]
+    },
+    {
+      "key": "river",
+      "voice_id": "SAz9YHcvj6GT2YYXdXww",
+      "name": "River",
+      "gender": "neutral",
+      "description": "Relaxed, Neutral, Informative",
+      "settings": {
+        "stability": 0.6,
+        "similarity_boost": 0.75,
+        "style": 0.1,
+        "use_speaker_boost": true,
+        "speed": 0.85
+      },
+      "files": [
+        "mysterious-phone-pulse-daily.mp3",
+        "haunted-tape-footsteps-s17-corridor.mp3"
+      ]
+    },
+    {
+      "key": "chris",
+      "voice_id": "iP95p4xoKVk53GoZ742B",
+      "name": "Chris",
+      "gender": "male",
+      "description": "Charming, Down-to-Earth",
+      "settings": {
+        "stability": 0.5,
+        "similarity_boost": 0.78,
+        "style": 0.25,
+        "use_speaker_boost": true,
+        "speed": 0.95
+      },
+      "files": [
+        "tense-tape-knocking-archive-door.mp3",
+        "deep-phone-alliance-trust.mp3"
+      ]
     }
   ]
 }
